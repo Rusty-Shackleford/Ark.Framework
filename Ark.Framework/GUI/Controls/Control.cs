@@ -31,19 +31,23 @@ namespace Ark.Framework.GUI.Controls
 
 
         #region [ Anchoring ]
-        public event EventHandler<PositionChangedArgs> OnPositionChanged;
-        private AnchorComponent _anchor;
-        public AnchorComponent Anchor
+        public Rectangle AnchorBounds
         {
-            get { return _anchor; }
+            get
+            {
+                return ActiveStyle.AnchoringOffset.ApplyToRectangle(Position, ActiveStyle.Size);
+            }
         }
+
+        public event EventHandler<AnchorMovedArgs> OnPositionChanged;
+        public AnchorComponent Anchor { get; private set; }
 
         public void AnchorTo(IAnchorable target, PositionType style, int offsetX = 0, int offsetY = 0, AnchorType anchorType = AnchorType.Bounds)
         {
-            if (target != (IAnchorable)this)
+            if (target.GetHashCode() != GetHashCode())
             {
                 RemoveAnchor();
-                _anchor = new AnchorComponent(target, this, anchorType, style, new MonoGame.Extended.Size2(offsetX, offsetY));
+                Anchor = new AnchorComponent(target, this, anchorType, style, new PositionOffset(offsetX, offsetY));
                 return;
             }
             Console.WriteLine("WARNING: Attempted to anchor this object to itself.");
@@ -56,18 +60,16 @@ namespace Ark.Framework.GUI.Controls
 
         public void RemoveAnchor()
         {
-            if (_anchor != null)
+            if (Anchor != null)
             {
-                _anchor.RemoveAnchor();
-                _anchor = null;
+                Anchor.RemoveAnchor();
+                Anchor = null;
             }
         }
         #endregion
 
 
         #region [ Dimmensional ]
-        public Vector2 OriginalPosition { get; private set; }
-        public Vector2 DistanceMoved { get; private set; }
         private Vector2 _position;
         public Vector2 Position
         {
@@ -76,8 +78,8 @@ namespace Ark.Framework.GUI.Controls
             {
                 if (value != _position)
                 {
-
-                    OriginalPosition = _position;
+                    var distanceMoved = _position - value;
+                    OnPositionChanged?.Invoke(this, new AnchorMovedArgs(distanceMoved));
                     _position = value;
 
                 }
@@ -86,11 +88,12 @@ namespace Ark.Framework.GUI.Controls
 
         public virtual int Height
         {
-            get { return DefaultStyle.Size.Height; }
+            get { return ActiveStyle.Size.Height; }
         }
+
         public virtual int Width
         {
-            get { return DefaultStyle.Size.Width; }
+            get { return ActiveStyle.Size.Width; }
         }
 
         public virtual Rectangle Bounds
@@ -110,12 +113,7 @@ namespace Ark.Framework.GUI.Controls
         {
             get
             {
-                return new Rectangle(
-                    (int)Position.X + DefaultStyle.HoverBounds.X,
-                    (int)Position.Y + DefaultStyle.HoverBounds.Y,
-                    DefaultStyle.HoverBounds.Width,
-                    DefaultStyle.HoverBounds.Height
-              );
+                return ActiveStyle.HoverOffset.ApplyToRectangle(Position, ActiveStyle.Size);
             }
         }
 
@@ -123,12 +121,7 @@ namespace Ark.Framework.GUI.Controls
         {
             get
             {
-                return new Rectangle(
-                    (int)Position.X + DefaultStyle.DraggableBounds.X,
-                    (int)Position.Y + DefaultStyle.DraggableBounds.Y,
-                    DefaultStyle.DraggableBounds.Width,
-                    DefaultStyle.DraggableBounds.Height
-                    );
+                return ActiveStyle.DraggableOffset.ApplyToRectangle(Position, ActiveStyle.Size);
             }
         }
 
@@ -136,12 +129,7 @@ namespace Ark.Framework.GUI.Controls
         {
             get
             {
-                return new Rectangle(
-                    (int)Position.X + DefaultStyle.InteractiveBounds.X,
-                    (int)Position.Y + DefaultStyle.InteractiveBounds.Y,
-                    DefaultStyle.InteractiveBounds.Width,
-                    DefaultStyle.InteractiveBounds.Height
-                    );
+                return ActiveStyle.InteractiveOffset.ApplyToRectangle(Position, ActiveStyle.Size);
             }
         }
         #endregion
@@ -163,7 +151,20 @@ namespace Ark.Framework.GUI.Controls
             }
         }
 
-        public ControlStyle ActiveStyle { get; protected set; }
+        private ControlStyle _activeStyle;
+        public ControlStyle ActiveStyle
+        {
+            get { return _activeStyle; }
+            set
+            {
+                if (value != _activeStyle)
+                {
+                    if (!_activeStyle.EqualDimmensionsTo(value))
+                        OnDimmensionChanged?.Invoke(this, EventArgs.Empty);
+                    _activeStyle = value;
+                }
+            }
+        }
         #endregion
 
 

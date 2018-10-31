@@ -15,11 +15,11 @@ namespace Ark.Framework.GUI.Anchoring
 
     //    }
     //}
-    public class PositionChangedArgs
+    public class AnchorMovedArgs
     {
         public Vector2 DistanceMoved { get; private set; }
 
-        public PositionChangedArgs(Vector2 distanceMoved)
+        public AnchorMovedArgs(Vector2 distanceMoved)
         {
             DistanceMoved = distanceMoved;
         }

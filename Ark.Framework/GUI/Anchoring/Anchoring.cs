@@ -9,7 +9,7 @@ namespace Ark.Framework.GUI.Anchoring
 {
     public static class Anchoring
     {
-        public static Vector2 GetPosition(Rectangle anchor, Rectangle anchored, PositionType type, Vector2 offset)
+        public static Vector2 GetPosition(Rectangle anchor, Rectangle anchored, PositionType type, PositionOffset offset)
         {
             if (anchor == anchored)
             {
