@@ -7,75 +7,55 @@ namespace Ark.Framework.GUI.Anchoring
 {
     public class AnchorComponent
     {
-        public AnchorComponent(IAnchorable target, IAnchorable owner, AnchorType anchorType, PositionType positionType, PositionOffset offset)
-        {
-            _target = target;
-            _owner = owner;
-            _anchorType = anchorType;
-            _positionType = positionType;
-            _anchorOffset = offset;
-            _target.OnPositionChanged += AnchorMoved;
-        }
-
+        #region [ Members ]
         private IAnchorable _owner;
         private IAnchorable _target;
 
-        private readonly PositionType _positionType;
-        public PositionType PositionType
+        public AnchorAlignment Alignment { get; set; }
+        public PositionOffset Offset { get; set; }
+
+        public Vector2 AnchoredPosition
         {
-            get { return _positionType; }
+            get { return Anchoring.GetPosition(_target.AnchorBounds, _owner.AnchorBounds, Alignment, Offset); }
         }
+        #endregion
 
-        private readonly AnchorType _anchorType;
-        public AnchorType AnchorType
+
+        #region [ Constructor ]
+        public AnchorComponent(IAnchorable target, IAnchorable owner, AnchorAlignment alignment, PositionOffset offset)
         {
-            get { return _anchorType; }
+            _target = target;
+            _owner = owner;
+            Alignment = alignment;
+            Offset = offset;
+            _target.OnPositionChanged += OnAnchorMoved;
         }
+        #endregion
 
-        private readonly PositionOffset _anchorOffset;
-        public PositionOffset AnchorOffset
-        {
-            get { return _anchorOffset; }
-        }
 
-        private Rectangle _targetRectangle
-        {
-            get
-            {
-                return _target.Bounds;
-
-                //switch (_anchorType)
-                //{
-                //    case AnchorType.Bounds:
-                //        return _target.Bounds;
-                //    case AnchorType.VirtualBounds:
-                //        return _target.VirtualBounds;
-                //    default:
-                //        return _target.Bounds;
-                //}
-            }
-        }
-
-        public Vector2 AnchoredPosition()
-        {
-            return Anchoring.GetPosition(_targetRectangle, _owner.Bounds, _positionType, _anchorOffset);
-        }
-
+        #region [ AnchorMoved ]
         /// <summary>
-        /// Moved the anchored item the same distance its anchor moved.
+        /// When the anchor moves, move it's children the same distance.
         /// </summary>
         /// <param name="sender">Anchor</param>
         /// <param name="e">PositionChangedArgs</param>
-        private void AnchorMoved(object sender, AnchorMovedArgs e)
+        private void OnAnchorMoved(object sender, AnchorMovedArgs e)
         {
-            _owner.Move(e.DistanceMoved);
+            _owner.Position += e.DistanceMoved;
         }
+        #endregion
 
 
+        #region [ RemoveAnchor ]
+        /// <summary>
+        /// Unsubscribe this object from Anchoring Events
+        /// </summary>
         public void RemoveAnchor()
         {
-            _target.OnPositionChanged -= AnchorMoved;
+            _target.OnPositionChanged -= OnAnchorMoved;
         }
+        #endregion
+
 
 
 

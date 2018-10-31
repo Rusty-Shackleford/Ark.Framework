@@ -7,9 +7,8 @@ namespace Ark.Framework.GUI.Controls.Styles
     /// <summary>
     /// Generic style information used to render a Control.
     /// </summary>
-    public class ControlStyle
+    public class TextureControlStyle
     {
-
         #region [ Members ]
         public Texture2D Texture { get; set; }
         public Size Size { get { return new Size(Texture.Width, Texture.Height); } }
@@ -23,7 +22,7 @@ namespace Ark.Framework.GUI.Controls.Styles
         #endregion
 
         #region [ Constructor ]
-        public ControlStyle(Texture2D texture)
+        public TextureControlStyle(Texture2D texture)
         {
             Texture = texture;
             InteractiveOffset = RectangleOffset.Zero;
@@ -34,7 +33,7 @@ namespace Ark.Framework.GUI.Controls.Styles
         #endregion
 
         #region [ EqualSizeTo ]
-        public bool EqualDimmensionsTo(ControlStyle other)
+        public bool EqualDimmensionsTo(TextureControlStyle other)
         {
             return Size == other.Size &&
                 InteractiveOffset == other.InteractiveOffset &&

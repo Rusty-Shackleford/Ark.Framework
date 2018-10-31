@@ -10,9 +10,9 @@ namespace Ark.Framework.GUI.Anchoring
     {
         #region [ Constructor ]
         public AnchorToArgs(IAnchorable anchorTo) 
-            : this(anchorTo, PositionType.Inside_Top_Left, 0, 0 , AnchorType.Bounds){ }
+            : this(anchorTo, AnchorAlignment.Inside_Top_Left, 0, 0 , AnchorType.Bounds){ }
 
-        public AnchorToArgs(IAnchorable anchorTo, PositionType positionType, int x, int y, AnchorType type)
+        public AnchorToArgs(IAnchorable anchorTo, AnchorAlignment positionType, int x, int y, AnchorType type)
         {
             AnchorTo = anchorTo;
             PositionType = positionType;
@@ -25,7 +25,7 @@ namespace Ark.Framework.GUI.Anchoring
 
         #region [ Members ]
         public IAnchorable AnchorTo { get; set; }
-        public PositionType PositionType { get; set; }
+        public AnchorAlignment PositionType { get; set; }
         public int OffsetX { get; set; }
         public int OffsetY { get; set; }
         public AnchorType AnchorType { get; set; }

@@ -51,15 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GUI\Anchoring\AnchorChangedArgs.cs" />
     <Compile Include="GUI\Anchoring\AnchorComponent.cs" />
     <Compile Include="GUI\Anchoring\Anchoring.cs" />
     <Compile Include="GUI\Anchoring\AnchorToArgs.cs" />
-    <Compile Include="GUI\Anchoring\Enum_AnchorType.cs" />
-    <Compile Include="GUI\Anchoring\Enum_PositionType.cs" />
-    <Compile Include="GUI\Anchoring\Enum_VerticalAlign.cs" />
+    <Compile Include="GUI\Anchoring\AnchorAlignment.cs" />
     <Compile Include="GUI\Anchoring\IAnchorable.cs" />
-    <Compile Include="GUI\Anchoring\PositionChangedArgs.cs" />
+    <Compile Include="GUI\Anchoring\AnchorMovedArgs.cs" />
     <Compile Include="GUI\Controls\Button.cs" />
     <Compile Include="GUI\Controls\Control.cs" />
     <Compile Include="GUI\Controls\ControlState.cs" />

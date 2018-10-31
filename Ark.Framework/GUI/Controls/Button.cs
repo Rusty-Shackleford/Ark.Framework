@@ -22,7 +22,7 @@ namespace Ark.Framework.GUI.Controls
             if (!string.IsNullOrEmpty(label) && style.FontStyle != null)
             {
                 Label = new Label(label, style.FontStyle);
-                Label.AnchorTo(this, Anchoring.PositionType.Inside_Middle_Center, 0, 0, Anchoring.AnchorType.Bounds);
+                Label.AnchorTo(this, Anchoring.AnchorAlignment.Inside_Middle_Center, 0, 0, Anchoring.AnchorType.Bounds);
             }
         }
         #endregion

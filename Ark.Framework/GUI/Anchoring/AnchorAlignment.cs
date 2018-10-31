@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ark.Framework.GUI.Anchoring
 {
-    public enum PositionType
+    public enum AnchorAlignment
     {
         Above_Left,
         Above_Center,

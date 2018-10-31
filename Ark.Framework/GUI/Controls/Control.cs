@@ -21,7 +21,7 @@ namespace Ark.Framework.GUI.Controls
     // similar functionality for controls (i.e. if two controls can both be clicked, have an IClickable interface)
     public abstract class Control : IAnchorable
     {
-        protected Control(ControlStyle style)
+        protected Control(TextureControlStyle style)
         {
             Visible = true;
             Enabled = true;
@@ -42,7 +42,7 @@ namespace Ark.Framework.GUI.Controls
         public event EventHandler<AnchorMovedArgs> OnPositionChanged;
         public AnchorComponent Anchor { get; private set; }
 
-        public void AnchorTo(IAnchorable target, PositionType style, int offsetX = 0, int offsetY = 0, AnchorType anchorType = AnchorType.Bounds)
+        public void AnchorTo(IAnchorable target, AnchorAlignment style, int offsetX = 0, int offsetY = 0, AnchorType anchorType = AnchorType.Bounds)
         {
             if (target.GetHashCode() != GetHashCode())
             {
@@ -136,8 +136,8 @@ namespace Ark.Framework.GUI.Controls
 
 
         #region [ Style ]
-        private ControlStyle _defaultStyle;
-        public virtual ControlStyle DefaultStyle
+        private TextureControlStyle _defaultStyle;
+        public virtual TextureControlStyle DefaultStyle
         {
             get { return _defaultStyle; }
             set
@@ -151,14 +151,16 @@ namespace Ark.Framework.GUI.Controls
             }
         }
 
-        private ControlStyle _activeStyle;
-        public ControlStyle ActiveStyle
+        private TextureControlStyle _activeStyle;
+        public TextureControlStyle ActiveStyle
         {
             get { return _activeStyle; }
             set
             {
                 if (value != _activeStyle)
                 {
+                    //TODO: Is there really a use case in which the anchor dimmensions 
+                    // of the control change based on the curent style of it?
                     if (!_activeStyle.EqualDimmensionsTo(value))
                         OnDimmensionChanged?.Invoke(this, EventArgs.Empty);
                     _activeStyle = value;
