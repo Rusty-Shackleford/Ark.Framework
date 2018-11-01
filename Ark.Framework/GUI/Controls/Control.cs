@@ -8,26 +8,31 @@ using System;
 
 namespace Ark.Framework.GUI.Controls
 {
-    //TODO: LEFT OFF HERE
-    // 10/30/2018: Sorting out the import of these Monogame.Forms gui elements, starting with control
-    // I've made major changed to "ControlStyle" in order to simplify its job - it should now only hold
-    // a Texture and the relevant data for its various bounding rectangles (hoverbounds, etc)
-    // this cascades down to anchoring, which appears to be in the middle of major changes from my PREVIOUS
-    // attempt at this.  Do what is necessary to make it work, streamline anchoring, and remove and "rendering"
-    // references and just have the controls draw themselves.
-    // Next: I probably need to overhaul the event system for controls to simplify these, and place more (or all)
-    // of the responsibility for these on the sub-classes that will use them, as you will never have a "control"
-    // anyway, and so you can have different controls with different events.  An interface can be used to group
-    // similar functionality for controls (i.e. if two controls can both be clicked, have an IClickable interface)
     public abstract class Control : IAnchorable
     {
+        /// <summary>
+        /// Make a new instance of this control with its same settings.
+        /// </summary>
+        /// <returns></returns>
+        public abstract Control MakeClone();
+
+
+        /// <summary>
+        /// Create a new control.
+        /// </summary>
+        /// <param name="style">The default style to be used to render the control.</param>
+        #region [ Constructor ]
         protected Control(TextureControlStyle style)
         {
             Visible = true;
             Enabled = true;
             DefaultStyle = style;
-            ActiveStyle = DefaultStyle;
+            _currentStyle = DefaultStyle;
+            HoveredStyle = DefaultStyle;
+            PressedStyle = DefaultStyle;
         }
+        #endregion
+
 
 
         #region [ Anchoring ]
@@ -35,27 +40,24 @@ namespace Ark.Framework.GUI.Controls
         {
             get
             {
-                return ActiveStyle.AnchoringOffset.ApplyToRectangle(Position, ActiveStyle.Size);
+                return CurrentStyle.AnchoringOffset.ApplyToRectangle(Position, CurrentStyle.Size);
             }
         }
 
         public event EventHandler<AnchorMovedArgs> OnPositionChanged;
         public AnchorComponent Anchor { get; private set; }
 
-        public void AnchorTo(IAnchorable target, AnchorAlignment style, int offsetX = 0, int offsetY = 0, AnchorType anchorType = AnchorType.Bounds)
+        public void AnchorTo(IAnchorable target, AnchorAlignment alignment, PositionOffset offset)
         {
+            // never anchor to yourself, it's dangerous
             if (target.GetHashCode() != GetHashCode())
             {
                 RemoveAnchor();
-                Anchor = new AnchorComponent(target, this, anchorType, style, new PositionOffset(offsetX, offsetY));
+                Anchor = new AnchorComponent(target, this, alignment, offset);
+                Position = Anchor.AnchoredPosition;
                 return;
             }
             Console.WriteLine("WARNING: Attempted to anchor this object to itself.");
-        }
-
-        public void AnchorTo(AnchorToArgs args)
-        {
-            AnchorTo(args.AnchorTo, args.PositionType, args.OffsetX, args.OffsetY, args.AnchorType);
         }
 
         public void RemoveAnchor()
@@ -74,26 +76,25 @@ namespace Ark.Framework.GUI.Controls
         public Vector2 Position
         {
             get { return _position; }
-            private set
+            set
             {
                 if (value != _position)
                 {
                     var distanceMoved = _position - value;
                     OnPositionChanged?.Invoke(this, new AnchorMovedArgs(distanceMoved));
                     _position = value;
-
                 }
             }
         }
 
         public virtual int Height
         {
-            get { return ActiveStyle.Size.Height; }
+            get { return CurrentStyle.Size.Height; }
         }
 
         public virtual int Width
         {
-            get { return ActiveStyle.Size.Width; }
+            get { return CurrentStyle.Size.Width; }
         }
 
         public virtual Rectangle Bounds
@@ -113,7 +114,7 @@ namespace Ark.Framework.GUI.Controls
         {
             get
             {
-                return ActiveStyle.HoverOffset.ApplyToRectangle(Position, ActiveStyle.Size);
+                return CurrentStyle.HoverOffset.ApplyToRectangle(Position, CurrentStyle.Size);
             }
         }
 
@@ -121,7 +122,7 @@ namespace Ark.Framework.GUI.Controls
         {
             get
             {
-                return ActiveStyle.DraggableOffset.ApplyToRectangle(Position, ActiveStyle.Size);
+                return CurrentStyle.DraggableOffset.ApplyToRectangle(Position, CurrentStyle.Size);
             }
         }
 
@@ -129,41 +130,32 @@ namespace Ark.Framework.GUI.Controls
         {
             get
             {
-                return ActiveStyle.InteractiveOffset.ApplyToRectangle(Position, ActiveStyle.Size);
+                return CurrentStyle.InteractiveOffset.ApplyToRectangle(Position, CurrentStyle.Size);
             }
         }
         #endregion
 
 
         #region [ Style ]
-        private TextureControlStyle _defaultStyle;
-        public virtual TextureControlStyle DefaultStyle
-        {
-            get { return _defaultStyle; }
-            set
-            {
-                if (value.Size != _defaultStyle.Size)
-                {
-                    _defaultStyle = value;
-                    OnDimmensionChanged?.Invoke(this, EventArgs.Empty);
-                    OnPropertyChanged?.Invoke(this, EventArgs.Empty);
-                }
-            }
-        }
 
-        private TextureControlStyle _activeStyle;
-        public TextureControlStyle ActiveStyle
+        public TextureControlStyle DefaultStyle { get; set; }
+        public TextureControlStyle HoveredStyle { get; set; }
+        public TextureControlStyle PressedStyle { get; set; }
+
+
+        private TextureControlStyle _currentStyle;
+        public TextureControlStyle CurrentStyle
         {
-            get { return _activeStyle; }
+            get { return _currentStyle; }
             set
             {
-                if (value != _activeStyle)
+                if (value != _currentStyle)
                 {
                     //TODO: Is there really a use case in which the anchor dimmensions 
                     // of the control change based on the curent style of it?
-                    if (!_activeStyle.EqualDimmensionsTo(value))
-                        OnDimmensionChanged?.Invoke(this, EventArgs.Empty);
-                    _activeStyle = value;
+                    if (!_currentStyle.EqualDimmensionsTo(value))
+                        DimmensionChanged?.Invoke(this, EventArgs.Empty);
+                    _currentStyle = value;
                 }
             }
         }
@@ -171,13 +163,12 @@ namespace Ark.Framework.GUI.Controls
 
 
         #region [ Events ]
-        public event EventHandler OnGainedFocus;
-        public event EventHandler OnLostFocus;
-        public event EventHandler OnClicked;
-        public event EventHandler OnMouseOver;
-        public event EventHandler OnMouseOut;
-        public event EventHandler OnPropertyChanged;
-        public event EventHandler OnDimmensionChanged;
+        public event EventHandler MouseEntered;
+        public event EventHandler MouseLeft;
+        public event EventHandler MouseDown;
+        public event EventHandler MouseUp;
+        public event EventHandler DimmensionChanged;
+        public event EventHandler Clicked;
         #endregion
 
 
@@ -186,103 +177,71 @@ namespace Ark.Framework.GUI.Controls
         public bool Enabled { get; set; }
         public bool Pressed { get; protected set; }
         public bool Hovered { get; protected set; }
-        public bool Dragging { get; protected set; }
+        #endregion
 
-        private bool _hasFocus;
-        public bool HasFocus
+
+        #region [ Mouse Down/Up ]
+        public virtual void OnMouseDown(MouseEventArgs e)
         {
-            get { return _hasFocus; }
-            set
+            if (Enabled && !Pressed)
             {
-                if (value != _hasFocus)
+                if (InteractiveBounds.Contains(e.Position))
                 {
-                    _hasFocus = value;
-                    if (_hasFocus)
-                    {
-                        OnGainedFocus?.Invoke(this, EventArgs.Empty);
-                    }
-                    else
-                    {
-                        OnLostFocus?.Invoke(this, EventArgs.Empty);
-                    }
+                    Pressed = true;
+                    if (PressedStyle != null)
+                        CurrentStyle = PressedStyle;
+                    MouseDown?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
 
-        public ControlState State
+        public virtual void OnMouseUp(MouseEventArgs e)
         {
-            get
+            if (Enabled && Pressed)
             {
-                if (!Enabled)
+                if (InteractiveBounds.Contains(e.Position))
                 {
-                    return ControlState.Disabled;
+                    Pressed = false;
+                    CurrentStyle = DefaultStyle;
+                    MouseUp?.Invoke(this, EventArgs.Empty);
+                    Clicked?.Invoke(this, EventArgs.Empty);
                 }
-                if (Hovered)
-                {
-                    if (Pressed)
-                    {
-                        return ControlState.Pressed;
-                    }
-                    return ControlState.Hovered;
-                }
-                if (HasFocus)
-                {
-                    return ControlState.Activated;
-                }
-                return ControlState.Default;
             }
         }
         #endregion
 
 
-        #region [ Mouse Actions]
-        public virtual void MouseOver(MouseEventArgs e)
+        #region [ Mouse Hover ]
+        public virtual void OnMouseEntered(MouseEventArgs e)
         {
             if (Enabled && !Hovered)
             {
                 if (HoverBounds.Contains(e.Position))
                 {
                     Hovered = true;
-                    OnMouseOver?.Invoke(this, EventArgs.Empty);
+                    if (HoveredStyle != null)
+                        CurrentStyle = HoveredStyle;
+                    MouseEntered?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
-        public virtual void MouseOut(MouseEventArgs e)
+        public virtual void OnMouseLeft(MouseEventArgs e)
         {
             if (Enabled && Hovered)
             {
                 if (!HoverBounds.Contains(e.Position))
                 {
                     Hovered = false;
-                    OnMouseOut?.Invoke(this, EventArgs.Empty);
+                    CurrentStyle = DefaultStyle;
+                    MouseLeft?.Invoke(this, EventArgs.Empty);
                 }
-            }
-        }
-        public virtual void Press(MouseEventArgs e)
-        {
-            if (Enabled)
-            {
-                Pressed = true;
-                HasFocus = true;
-            }
-        }
-        public virtual void Click(MouseEventArgs e)
-        {
-            if (Enabled && Hovered)
-            {
-                Pressed = false;
-                OnClicked?.Invoke(this, EventArgs.Empty);
-            }
-            else
-            {
-                HasFocus = false;
             }
         }
         #endregion
 
 
         #region [ Virtual - Update / Draw ]
-        public virtual void Update(GameTime gameTime) { }
+        //public abstract void Update(GameTime gameTime);
         public abstract void Draw(SpriteBatch spriteBatch);
         #endregion
     }

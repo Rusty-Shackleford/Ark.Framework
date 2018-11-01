@@ -1,9 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Ark.Framework.GUI;
+using Ark.Framework.GUI.Controls;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.BitmapFonts;
 using System;
-
+using System.Diagnostics;
 
 namespace Ark.Framework.Demo
 {
@@ -26,7 +28,9 @@ namespace Ark.Framework.Demo
                                                                                                                                         
         // Specific Junk
         Texture2D background { get; set; }
-
+        InputHandler inputHandler = new InputHandler();
+        Button button1 { get; set; }
+        Button button2 { get; set; }
         #endregion
 
 
@@ -77,6 +81,53 @@ namespace Ark.Framework.Demo
 
             Mouse.SetCursor(MouseCursor.FromTexture2D(GameAssets.MouseCursor, 0, 0));
             background = GameAssets.Background;
+
+
+            button1 = new Button(GameAssets.Button, new Vector2(200, 75));
+            button1.HoveredStyle = GameAssets.ButtonHover;
+            button1.PressedStyle = GameAssets.ButtonPressed;
+            button1.MouseDown += MouseDownTest;
+            button1.MouseUp += MouseUpTest;
+            button1.MouseEntered += MouseEnteredTest;
+            button1.MouseLeft += MouseLeftTest;
+            button1.Clicked += ClickedTest;
+
+
+            button2 = (Button)button1.MakeClone();
+            button2.AnchorTo(button1, GUI.Anchoring.AnchorAlignment.Below_Center, new PositionOffset(0, 30));
+            button2.Clicked += MoveButton1;
+
+            inputHandler.Controls.Add(button1);
+            inputHandler.Controls.Add(button2);
+        }
+
+        private void MoveButton1(object sender, EventArgs e)
+        {
+            button1.Position = new Vector2(button1.Position.X + 50, button1.Position.Y + 50);
+        }
+
+        private void ClickedTest(object sender, EventArgs e)
+        {
+            Debug.WriteLine("CLICKED!");
+        }
+        private void MouseLeftTest(object sender, EventArgs e)
+        {
+            Debug.WriteLine("Mouse Left");
+        }
+
+        private void MouseEnteredTest(object sender, EventArgs e)
+        {
+            Debug.WriteLine("Mouse Entered");
+        }
+
+        private void MouseUpTest(object sender, EventArgs e)
+        {
+            Debug.WriteLine("Mouse Up");
+        }
+
+        private void MouseDownTest(object sender, EventArgs e)
+        {
+            Debug.WriteLine("Mouse Down");
         }
         #endregion
 
@@ -114,6 +165,7 @@ namespace Ark.Framework.Demo
 
 
             // TODO: Add your update logic here
+            inputHandler.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -130,8 +182,9 @@ namespace Ark.Framework.Demo
             // Background:
             _spriteBatch.Draw(background, Vector2.Zero, Color.White);
             _spriteBatch.DrawString(GameAssets.Plumbis_11, "Test", new Vector2(100,100), Color.White);
-            // GlobalSpriteBatch.Draw(background, Vector2.Zero, Color.White);
 
+            button1.Draw(_spriteBatch);
+            button2.Draw(_spriteBatch);
             // Mouse Cursor:  Last to draw in GlobalSpriteBatch
             // to ensure it is on top of z-position.
             DrawMouseCursor(_spriteBatch);

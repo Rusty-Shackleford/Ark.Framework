@@ -1,36 +1,42 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Ark.Framework.GUI.Controls.Styles;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.Input.InputListeners;
 using System;
 
 
 namespace Ark.Framework.GUI.Controls
 {
-    public class Button : Control
+    public class Button : Control, IClickable
     {
-        #region [ Constructor ]
-        public Button(ControlStyle style) : this("", style) { }
-
-        public Button(string label, ControlStyle style) : base()
+        #region [ MakeClone ]
+        public override Control MakeClone()
         {
-            if (style == null)
-            {
-                throw new NotSupportedException("A style must be provided for this button.");
-            }
+            Button c = new Button(DefaultStyle);
+            c.HoveredStyle = HoveredStyle;
+            c.PressedStyle = PressedStyle;
+            c.Position = new Vector2(Position.X + 10, Position.Y + 10);
+            return c;
+        }
+        #endregion
 
-            DefaultStyle = style;
 
-            _render = new ControlRenderer(this);
-            if (!string.IsNullOrEmpty(label) && style.FontStyle != null)
-            {
-                Label = new Label(label, style.FontStyle);
-                Label.AnchorTo(this, Anchoring.AnchorAlignment.Inside_Middle_Center, 0, 0, Anchoring.AnchorType.Bounds);
-            }
+        #region [ Constructor ]
+        public Button(TextureControlStyle style) : base(style) { }
+        public Button(TextureControlStyle style, Vector2 position) : base(style)
+        {
+            Position = position;
         }
         #endregion
 
 
         #region [ Members ]
-        private ControlRenderer _render;
-        public Label Label { get; set; }
+        // public Label Label { get; set; }
+        #endregion
+
+
+        #region [ Events ]
+
         #endregion
 
 
@@ -39,11 +45,7 @@ namespace Ark.Framework.GUI.Controls
         {
             if (Visible)
             {
-                _render.Draw(spriteBatch);
-                if (Label != null)
-                {
-                    Label.Draw(spriteBatch);
-                }
+                spriteBatch.Draw(CurrentStyle.Texture, Position, Color.White);
             }
         }
         #endregion

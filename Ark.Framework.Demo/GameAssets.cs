@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Ark.Framework.GUI.Controls.Styles;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.BitmapFonts;
 
@@ -21,6 +22,7 @@ namespace Ark.Framework.Demo
         #region [ Texture Assets ]
         public static Texture2D Background { get; private set; }
         public static Texture2D MouseCursor { get; private set; }
+
         /// <summary>
         /// Load Textures
         /// </summary>
@@ -34,11 +36,32 @@ namespace Ark.Framework.Demo
         #endregion
 
 
+        #region [ Button Assets ]
+        private static Texture2D ButtonTexture;
+        private static Texture2D ButtonHoverTexture;
+        private static Texture2D ButtonPressedTexture;
+
+        private static void LoadButtonAssets(ContentManager content)
+        {
+            ButtonTexture = content.Load<Texture2D>(@"UI/Button");
+            ButtonHoverTexture = content.Load<Texture2D>(@"UI/ButtonHover");
+            ButtonPressedTexture = content.Load<Texture2D>(@"UI/ButtonPressed");
+            Button = new TextureControlStyle(ButtonTexture);
+            ButtonHover = new TextureControlStyle(ButtonHoverTexture);
+            ButtonPressed = new TextureControlStyle(ButtonPressedTexture);
+        }
+
+        public static TextureControlStyle Button { get; private set; }
+        public static TextureControlStyle ButtonHover { get; private set; }
+        public static TextureControlStyle ButtonPressed { get; private set; }
+        #endregion
+
         #region [ LoadContent ]
         public static void LoadContent(ContentManager content)
         {
             LoadFonts(content);
             LoadTextures(content);
+            LoadButtonAssets(content);
         }
         #endregion
     }

@@ -22,6 +22,13 @@ namespace Ark.Framework.GUI.Anchoring
 
 
         #region [ Constructor ]
+        /// <summary>
+        /// Anchor this control to another.
+        /// </summary>
+        /// <param name="target">anchor to</param>
+        /// <param name="owner">this object</param>
+        /// <param name="alignment">alignment type</param>
+        /// <param name="offset">position offset</param>
         public AnchorComponent(IAnchorable target, IAnchorable owner, AnchorAlignment alignment, PositionOffset offset)
         {
             _target = target;

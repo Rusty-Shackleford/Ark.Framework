@@ -9,7 +9,7 @@ namespace Ark.Framework.GUI.Anchoring
         Vector2 Position { get; set; }
         Rectangle AnchorBounds { get; }
         event EventHandler<AnchorMovedArgs> OnPositionChanged;
-        event EventHandler OnDimmensionChanged;
-        void AnchorTo(IAnchorable target, AnchorAlignment style, int offsetX = 0, int offsetY = 0, AnchorType anchorType = AnchorType.Bounds);
+        event EventHandler DimmensionChanged;
+        void AnchorTo(IAnchorable target, AnchorAlignment alignment, PositionOffset offset);
     }
 }
