@@ -22,8 +22,8 @@ namespace Ark.Framework.GUI.Controls
 
 
         #region [ Constructor ]
-        public Button(TextureControlStyle style) : base(style) { }
-        public Button(TextureControlStyle style, Vector2 position) : base(style)
+        public Button(ControlStyle style) : base(style) { }
+        public Button(ControlStyle style, Vector2 position) : base(style)
         {
             Position = position;
         }

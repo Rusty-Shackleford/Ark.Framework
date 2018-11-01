@@ -46,14 +46,14 @@ namespace Ark.Framework.Demo
             ButtonTexture = content.Load<Texture2D>(@"UI/Button");
             ButtonHoverTexture = content.Load<Texture2D>(@"UI/ButtonHover");
             ButtonPressedTexture = content.Load<Texture2D>(@"UI/ButtonPressed");
-            Button = new TextureControlStyle(ButtonTexture);
-            ButtonHover = new TextureControlStyle(ButtonHoverTexture);
-            ButtonPressed = new TextureControlStyle(ButtonPressedTexture);
+            Button = new ControlStyle(ButtonTexture);
+            ButtonHover = new ControlStyle(ButtonHoverTexture);
+            ButtonPressed = new ControlStyle(ButtonPressedTexture);
         }
 
-        public static TextureControlStyle Button { get; private set; }
-        public static TextureControlStyle ButtonHover { get; private set; }
-        public static TextureControlStyle ButtonPressed { get; private set; }
+        public static ControlStyle Button { get; private set; }
+        public static ControlStyle ButtonHover { get; private set; }
+        public static ControlStyle ButtonPressed { get; private set; }
         #endregion
 
         #region [ LoadContent ]

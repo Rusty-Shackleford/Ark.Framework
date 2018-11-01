@@ -22,7 +22,7 @@ namespace Ark.Framework.GUI.Controls
         /// </summary>
         /// <param name="style">The default style to be used to render the control.</param>
         #region [ Constructor ]
-        protected Control(TextureControlStyle style)
+        protected Control(ControlStyle style)
         {
             Visible = true;
             Enabled = true;
@@ -138,13 +138,13 @@ namespace Ark.Framework.GUI.Controls
 
         #region [ Style ]
 
-        public TextureControlStyle DefaultStyle { get; set; }
-        public TextureControlStyle HoveredStyle { get; set; }
-        public TextureControlStyle PressedStyle { get; set; }
+        public ControlStyle DefaultStyle { get; set; }
+        public ControlStyle HoveredStyle { get; set; }
+        public ControlStyle PressedStyle { get; set; }
 
 
-        private TextureControlStyle _currentStyle;
-        public TextureControlStyle CurrentStyle
+        private ControlStyle _currentStyle;
+        public ControlStyle CurrentStyle
         {
             get { return _currentStyle; }
             set
