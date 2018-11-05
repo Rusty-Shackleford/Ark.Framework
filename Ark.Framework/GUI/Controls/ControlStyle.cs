@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.BitmapFonts;
 using System.ComponentModel;
 
-namespace Ark.Framework.GUI.Controls.Styles
+namespace Ark.Framework.GUI.Controls
 {
     /// <summary>
     /// Generic style information used to render a Control.

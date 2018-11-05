@@ -1,5 +1,4 @@
-﻿using Ark.Framework.GUI.Controls.Styles;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Ark.Framework.GUI.Anchoring;
 using MonoGame.Extended.Input.InputListeners;

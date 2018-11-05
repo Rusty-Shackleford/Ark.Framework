@@ -1,4 +1,4 @@
-﻿using Ark.Framework.GUI.Controls.Styles;
+﻿using Ark.Framework.GUI.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
