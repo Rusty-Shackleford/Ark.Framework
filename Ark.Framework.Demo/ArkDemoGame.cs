@@ -83,9 +83,13 @@ namespace Ark.Framework.Demo
             background = GameAssets.Background;
 
 
-            button1 = new Button(GameAssets.Button, new Vector2(200, 75));
-            button1.HoveredStyle = GameAssets.ButtonHover;
-            button1.PressedStyle = GameAssets.ButtonPressed;
+            button1 = new Button(GameAssets.Button, new Vector2(100, 100))
+            {
+                HoveredStyle = GameAssets.ButtonHover,
+                PressedStyle = GameAssets.ButtonPressed,
+                Name = "button1"
+            };
+            button1.Label.Text = "My Button Yo";
             button1.MouseDown += MouseDownTest;
             button1.MouseUp += MouseUpTest;
             button1.MouseEntered += MouseEnteredTest;
@@ -94,6 +98,8 @@ namespace Ark.Framework.Demo
 
 
             button2 = (Button)button1.MakeClone();
+            button2.Name = "button2";
+            button2.Label.Text = "Move";
             button2.AnchorTo(button1, GUI.Anchoring.AnchorAlignment.Below_Center, new PositionOffset(0, 30));
             button2.Clicked += MoveButton1;
 
@@ -181,7 +187,6 @@ namespace Ark.Framework.Demo
             _spriteBatch.Begin();
             // Background:
             _spriteBatch.Draw(background, Vector2.Zero, Color.White);
-            _spriteBatch.DrawString(GameAssets.Plumbis_11, "Test", new Vector2(100,100), Color.White);
 
             button1.Draw(_spriteBatch);
             button2.Draw(_spriteBatch);

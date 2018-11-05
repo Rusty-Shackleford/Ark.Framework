@@ -51,8 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DebugHelp.cs" />
     <Compile Include="GUI\Anchoring\AnchorComponent.cs" />
-    <Compile Include="GUI\Anchoring\Anchoring.cs" />
+    <Compile Include="GUI\Anchoring\Anchor.cs" />
     <Compile Include="GUI\Anchoring\AnchorAlignment.cs" />
     <Compile Include="GUI\Anchoring\IAnchorable.cs" />
     <Compile Include="GUI\Anchoring\AnchorMovedArgs.cs" />
@@ -62,8 +63,9 @@
     <Compile Include="GUI\Controls\ControlState.cs" />
     <Compile Include="GUI\IClickable.cs" />
     <Compile Include="GUI\Controls\Label.cs" />
-    <Compile Include="GUI\Controls\Styles\TextureControlStyle.cs" />
+    <Compile Include="GUI\Controls\Styles\ControlStyle.cs" />
     <Compile Include="GUI\Controls\Styles\FontStyle.cs" />
+    <Compile Include="GUI\IRefresh.cs" />
     <Compile Include="GUI\IInteractive.cs" />
     <Compile Include="GUI\InputHandler.cs" />
     <Compile Include="GUI\IMoveable.cs" />

@@ -4,11 +4,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Input.InputListeners;
 using System;
-
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Ark.Framework.GUI.Controls
 {
-    public abstract class Control : IAnchorable
+    public abstract class Control : IAnchorable, IRefresh
     {
         /// <summary>
         /// Make a new instance of this control with its same settings.
@@ -17,11 +18,11 @@ namespace Ark.Framework.GUI.Controls
         public abstract Control MakeClone();
 
 
+        #region [ Constructor / Initialize ]
         /// <summary>
-        /// Create a new control.
+        /// Create a new control.  Call Initialize() to notify the control that its construction is completed.
         /// </summary>
         /// <param name="style">The default style to be used to render the control.</param>
-        #region [ Constructor ]
         protected Control(ControlStyle style)
         {
             Visible = true;
@@ -31,19 +32,34 @@ namespace Ark.Framework.GUI.Controls
             HoveredStyle = DefaultStyle;
             PressedStyle = DefaultStyle;
         }
+
+
+        /// <summary>
+        /// Re-apply state-dependent data on this control.
+        /// </summary>
+        public virtual void Initialize()
+        {
+            if (Anchor != null)
+            {
+                Position = Anchor.AnchoredPosition;
+            }
+            Initialized = true;
+            Debug.WriteLine($"[{Name}]: Refresh()");
+            Debug.WriteLine($"  > " + ToString());
+        }
+
+        /// <summary>
+        /// Fetch any controls used as compoenents in the construction of this control,
+        /// so that they can be managed by an InputHandler
+        /// </summary>
+        /// <returns>A list of all controls that need input handling.</returns>
+        public virtual List<Control> RegisterSubControls() { return null; }
         #endregion
 
 
 
         #region [ Anchoring ]
-        public Rectangle AnchorBounds
-        {
-            get
-            {
-                return CurrentStyle.AnchoringOffset.ApplyToRectangle(Position, CurrentStyle.Size);
-            }
-        }
-
+        public abstract Rectangle GetAnchorBounds();
         public event EventHandler<AnchorMovedArgs> OnPositionChanged;
         public AnchorComponent Anchor { get; private set; }
 
@@ -80,7 +96,8 @@ namespace Ark.Framework.GUI.Controls
             {
                 if (value != _position)
                 {
-                    var distanceMoved = _position - value;
+                    Vector2 distanceMoved = Vector2.Subtract(value, _position);
+                    //var distanceMoved = Vector2.Distance(_position, value);
                     OnPositionChanged?.Invoke(this, new AnchorMovedArgs(distanceMoved));
                     _position = value;
                 }
@@ -177,6 +194,8 @@ namespace Ark.Framework.GUI.Controls
         public bool Enabled { get; set; }
         public bool Pressed { get; protected set; }
         public bool Hovered { get; protected set; }
+        public bool Initialized { get; protected set; }
+        public string Name { get; set; }
         #endregion
 
 
@@ -243,6 +262,23 @@ namespace Ark.Framework.GUI.Controls
         #region [ Virtual - Update / Draw ]
         //public abstract void Update(GameTime gameTime);
         public abstract void Draw(SpriteBatch spriteBatch);
+        #endregion
+
+
+        #region [ ToString ]
+        public override string ToString()
+        {
+            string myType = GetType().Name;
+            string anchor = Anchor?.ToString();
+            if (anchor == null)
+                anchor = "<null>";
+
+            return $"[Type: {myType}|" +
+                $"Name: {Name}|" +
+                $"Position: {DebugHelp.Vector2_ToString(Position)}|" +
+                $"Bounds: {DebugHelp.Rectangle_ToString(Bounds)}|" +
+                $"Anchor: {anchor}|";
+        }
         #endregion
     }
 }

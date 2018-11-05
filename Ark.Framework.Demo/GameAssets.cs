@@ -1,4 +1,5 @@
 ﻿using Ark.Framework.GUI.Controls.Styles;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.BitmapFonts;
@@ -46,9 +47,21 @@ namespace Ark.Framework.Demo
             ButtonTexture = content.Load<Texture2D>(@"UI/Button");
             ButtonHoverTexture = content.Load<Texture2D>(@"UI/ButtonHover");
             ButtonPressedTexture = content.Load<Texture2D>(@"UI/ButtonPressed");
-            Button = new ControlStyle(ButtonTexture);
-            ButtonHover = new ControlStyle(ButtonHoverTexture);
-            ButtonPressed = new ControlStyle(ButtonPressedTexture);
+            Button = new ControlStyle(ButtonTexture)
+            {
+                Font = Plumbis_11,
+                FontColor = Color.White
+            };
+            ButtonHover = new ControlStyle(ButtonHoverTexture)
+            {
+                Font = Plumbis_11,
+                FontColor = Color.White
+            };
+            ButtonPressed = new ControlStyle(ButtonPressedTexture)
+            {
+                Font = Plumbis_11,
+                FontColor = Color.White
+            };
         }
 
         public static ControlStyle Button { get; private set; }

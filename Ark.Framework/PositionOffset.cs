@@ -26,5 +26,10 @@ namespace Ark.Framework
         #endregion
 
 
+        public override string ToString()
+        {
+            return $"<{X.ToString()},{Y.ToString()}>";
+        }
+
     }
 }

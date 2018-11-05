@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.BitmapFonts;
 using System.ComponentModel;
 
 namespace Ark.Framework.GUI.Controls.Styles
@@ -10,6 +11,8 @@ namespace Ark.Framework.GUI.Controls.Styles
     public class ControlStyle
     {
         #region [ Members ]
+        public BitmapFont Font { get; set; }
+        public Color FontColor { get; set; }
         public Texture2D Texture { get; set; }
         public Size Size { get { return new Size(Texture.Width, Texture.Height); } }
 

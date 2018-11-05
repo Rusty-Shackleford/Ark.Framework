@@ -16,7 +16,7 @@ namespace Ark.Framework.GUI.Anchoring
 
         public Vector2 AnchoredPosition
         {
-            get { return Anchoring.GetPosition(_target.AnchorBounds, _owner.AnchorBounds, Alignment, Offset); }
+            get { return Anchor.GetPosition(_target.GetAnchorBounds(), _owner.GetAnchorBounds(), Alignment, Offset); }
         }
         #endregion
 
@@ -64,6 +64,17 @@ namespace Ark.Framework.GUI.Anchoring
         #endregion
 
 
+        #region [ ToString ]
+        public override string ToString()
+        {
+            string type = GetType().Name;
+            return $"[Type: {type}|" +
+                $"OwnedBy: {_owner.Name}|" +
+                $"AnchoredTo: {_target.Name}|" +
+                $"Align: {Alignment.ToString()}" +
+                $"Offset: {Offset.ToString()}|]";
+        }
+        #endregion
 
 
     }

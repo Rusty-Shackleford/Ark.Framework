@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Ark.Framework.GUI.Anchoring
 {
-    public static class Anchoring
+    public static class Anchor
     {
         public static Vector2 GetPosition(Rectangle anchor, Rectangle anchored, AnchorAlignment type, PositionOffset offset)
         {

@@ -27,7 +27,17 @@ namespace Ark.Framework.GUI
         #region [ Custom? IList Implements ]
         public void Add(Control item)
         {
-            ((IList<Control>)_controls).Add(item);
+            // Refresh the item so that any pending calculations can be finalized,
+            // get it's dependents, refresh those too
+            // then add the item and dependents to our collection.
+            item.Initialize();
+            List<Control> dependents = item.RegisterSubControls();
+            dependents?.ForEach(x => x.Initialize());
+            _controls.Add(item);
+            if (dependents != null)
+            {
+                _controls.AddRange(dependents);
+            }
         }
 
 

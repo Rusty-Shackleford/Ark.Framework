@@ -1,9 +1,10 @@
 ﻿using Ark.Framework.GUI.Controls.Styles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Ark.Framework.GUI.Anchoring;
 using MonoGame.Extended.Input.InputListeners;
 using System;
-
+using System.Collections.Generic;
 
 namespace Ark.Framework.GUI.Controls
 {
@@ -22,21 +23,38 @@ namespace Ark.Framework.GUI.Controls
 
 
         #region [ Constructor ]
-        public Button(ControlStyle style) : base(style) { }
-        public Button(ControlStyle style, Vector2 position) : base(style)
+        public Button(ControlStyle style) : this(style, Vector2.Zero) { }
+        public Button(ControlStyle style, Vector2 position, string label = "") : base(style)
         {
             Position = position;
+            Label = new Label(CurrentStyle, label);
+            Label.AnchorTo(this, AnchorAlignment.Inside_Middle_Center, PositionOffset.Zero);
+        }
+
+
+        public override List<Control> RegisterSubControls()
+        {
+            // return new List<Control>() { Label };
+            return null;
+        }
+        public override void Initialize()
+        {
+            Label.Initialize();
+            base.Initialize();
         }
         #endregion
 
 
         #region [ Members ]
-        // public Label Label { get; set; }
+        public Label Label { get; protected set; }
         #endregion
 
 
-        #region [ Events ]
-
+        #region [ Anchoring ]
+        public override Rectangle GetAnchorBounds()
+        {
+            return CurrentStyle.AnchoringOffset.ApplyToRectangle(Position, CurrentStyle.Size);
+        }
         #endregion
 
 
@@ -46,6 +64,7 @@ namespace Ark.Framework.GUI.Controls
             if (Visible)
             {
                 spriteBatch.Draw(CurrentStyle.Texture, Position, Color.White);
+                Label.Draw(spriteBatch);
             }
         }
         #endregion
