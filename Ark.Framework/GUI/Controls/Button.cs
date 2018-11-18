@@ -31,15 +31,10 @@ namespace Ark.Framework.GUI.Controls
         }
 
 
-        public override List<Control> RegisterSubControls()
+        public override void Refresh()
         {
-            // return new List<Control>() { Label };
-            return null;
-        }
-        public override void Initialize()
-        {
-            Label.Initialize();
-            base.Initialize();
+            Label.Refresh();
+            base.Refresh();
         }
         #endregion
 

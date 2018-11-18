@@ -79,7 +79,7 @@ namespace Ark.Framework.Demo
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             GameAssets.LoadContent(Content);
 
-            Mouse.SetCursor(MouseCursor.FromTexture2D(GameAssets.MouseCursor, 0, 0));
+           
             background = GameAssets.Background;
 
 

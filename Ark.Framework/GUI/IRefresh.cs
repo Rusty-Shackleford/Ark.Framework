@@ -8,6 +8,6 @@ namespace Ark.Framework.GUI
 {
     public interface IRefresh
     {
-        void Initialize();
+        void Refresh();
     }
 }

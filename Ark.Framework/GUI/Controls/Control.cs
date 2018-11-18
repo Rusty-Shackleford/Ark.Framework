@@ -13,13 +13,13 @@ namespace Ark.Framework.GUI.Controls
         /// <summary>
         /// Make a new instance of this control with its same settings.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A new instance of this control with similar settings.</returns>
         public abstract Control MakeClone();
 
 
         #region [ Constructor / Initialize ]
         /// <summary>
-        /// Create a new control.  Call Initialize() to notify the control that its construction is completed.
+        /// Create a new control.  Call Refresh() to notify the control that its construction is completed.
         /// </summary>
         /// <param name="style">The default style to be used to render the control.</param>
         protected Control(ControlStyle style)
@@ -34,29 +34,20 @@ namespace Ark.Framework.GUI.Controls
 
 
         /// <summary>
-        /// Re-apply state-dependent data on this control.
+        /// Apply state-dependent rules on this control, safe to call multiple times.
         /// </summary>
-        public virtual void Initialize()
+        public virtual void Refresh()
         {
             if (Anchor != null)
             {
                 Position = Anchor.AnchoredPosition;
             }
             Initialized = true;
-            Debug.WriteLine($"[{Name}]: Refresh()");
-            Debug.WriteLine($"  > " + ToString());
         }
-
-        /// <summary>
-        /// Fetch any controls used as compoenents in the construction of this control,
-        /// so that they can be managed by an InputHandler
-        /// </summary>
-        /// <returns>A list of all controls that need input handling.</returns>
-        public virtual List<Control> RegisterSubControls() { return null; }
         #endregion
-
-
-
+        
+        
+        
         #region [ Anchoring ]
         public abstract Rectangle GetAnchorBounds();
         public event EventHandler<AnchorMovedArgs> OnPositionChanged;
@@ -103,16 +94,25 @@ namespace Ark.Framework.GUI.Controls
             }
         }
 
-        public virtual int Height
-        {
-            get { return CurrentStyle.Size.Height; }
-        }
-
+        /// <summary>
+        /// Width determined by CurrentStyle Size
+        /// </summary>
         public virtual int Width
         {
             get { return CurrentStyle.Size.Width; }
         }
 
+        /// <summary>
+        /// Height determined by CurrentStyle Size
+        /// </summary>
+        public virtual int Height
+        {
+            get { return CurrentStyle.Size.Height; }
+        }
+
+        /// <summary>
+        /// Default bounds detection for this control.
+        /// </summary>
         public virtual Rectangle Bounds
         {
             get
@@ -126,6 +126,9 @@ namespace Ark.Framework.GUI.Controls
             }
         }
 
+        /// <summary>
+        /// Area of this control that is used for mouse over detection.
+        /// </summary>
         public virtual Rectangle HoverBounds
         {
             get
@@ -134,6 +137,9 @@ namespace Ark.Framework.GUI.Controls
             }
         }
 
+        /// <summary>
+        /// Area of this control that can be held for dragging.
+        /// </summary>
         public virtual Rectangle DraggableBounds
         {
             get
@@ -142,6 +148,9 @@ namespace Ark.Framework.GUI.Controls
             }
         }
 
+        /// <summary>
+        /// Area of this control that can be clicked.
+        /// </summary>
         public virtual Rectangle InteractiveBounds
         {
             get

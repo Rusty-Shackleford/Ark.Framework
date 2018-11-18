@@ -30,14 +30,8 @@ namespace Ark.Framework.GUI
             // Refresh the item so that any pending calculations can be finalized,
             // get it's dependents, refresh those too
             // then add the item and dependents to our collection.
-            item.Initialize();
-            List<Control> dependents = item.RegisterSubControls();
-            dependents?.ForEach(x => x.Initialize());
+            item.Refresh();
             _controls.Add(item);
-            if (dependents != null)
-            {
-                _controls.AddRange(dependents);
-            }
         }
 
 

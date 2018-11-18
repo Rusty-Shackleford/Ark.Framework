@@ -28,7 +28,7 @@ namespace Ark.Framework.GUI.Controls
                 if (value != _text)
                 {
                     _text = value;
-                    Initialize();
+                    Refresh();
                 }
             }
         }
