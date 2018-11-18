@@ -34,18 +34,15 @@ namespace Ark.Framework.GUI
             _controls.Add(item);
         }
 
-
         public void Insert(int index, Control item)
         {
             ((IList<Control>)_controls).Insert(index, item);
         }
 
-
         public bool Remove(Control item)
         {
             return ((IList<Control>)_controls).Remove(item);
         }
-
 
         public void RemoveAt(int index)
         {
@@ -57,11 +54,11 @@ namespace Ark.Framework.GUI
         #region [ Queries ]
         public float CalcTotalHeight()
         {
-            return Math.Abs(LowestItem().Bounds.Y - HighestItem().Bounds.Top);
+            return Math.Abs(FindBottomControl().Bounds.Y - FindTopControl().Bounds.Top);
         }
         public float CalcTotalWidth()
         {
-            return Math.Abs(RightmostItem().Bounds.Right - LeftmostItem().Bounds.Left);
+            return Math.Abs(FindRightmostControl().Bounds.Right - FindLeftmostControl().Bounds.Left);
         }
         public Vector2 CalcTotalSize(Vector2 position)
         {
@@ -96,19 +93,19 @@ namespace Ark.Framework.GUI
             return found;
         }
 
-        public Control RightmostItem()
+        public Control FindRightmostControl()
         {
             return FindItem((a, b) => a.Bounds.Right > b.Bounds.Right);
         }
-        public Control LeftmostItem()
+        public Control FindLeftmostControl()
         {
             return FindItem((a, b) => a.Bounds.Left < b.Bounds.Left);
         }
-        public Control HighestItem()
+        public Control FindTopControl()
         {
             return FindItem((a, b) => a.Bounds.Top < b.Bounds.Top);
         }
-        public Control LowestItem()
+        public Control FindBottomControl()
         {
             return FindItem((a, b) => a.Bounds.Bottom > b.Bounds.Bottom);
         }
@@ -144,12 +141,11 @@ namespace Ark.Framework.GUI
         {
             return ((IList<Control>)_controls).GetEnumerator();
         }
+
         public int IndexOf(Control item)
         {
             return ((IList<Control>)_controls).IndexOf(item);
         }
-
-
 
         IEnumerator IEnumerable.GetEnumerator()
         {

@@ -46,12 +46,12 @@ namespace Ark.Framework.GUI.Controls
         }
         #endregion
         
-        
-        
+
         #region [ Anchoring ]
+        public bool Anchored { get; private set; }
         public abstract Rectangle GetAnchorBounds();
         public event EventHandler<AnchorMovedArgs> OnPositionChanged;
-        public AnchorComponent Anchor { get; private set; }
+        protected AnchorComponent Anchor { get; private set; }
 
         public void AnchorTo(IAnchorable target, AnchorAlignment alignment, PositionOffset offset)
         {
@@ -61,6 +61,7 @@ namespace Ark.Framework.GUI.Controls
                 RemoveAnchor();
                 Anchor = new AnchorComponent(target, this, alignment, offset);
                 Position = Anchor.AnchoredPosition;
+                Anchored = true;
                 return;
             }
             Console.WriteLine("WARNING: Attempted to anchor this object to itself.");
@@ -72,6 +73,7 @@ namespace Ark.Framework.GUI.Controls
             {
                 Anchor.RemoveAnchor();
                 Anchor = null;
+                Anchored = false;
             }
         }
         #endregion

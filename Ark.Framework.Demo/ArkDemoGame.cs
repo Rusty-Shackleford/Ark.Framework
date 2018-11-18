@@ -28,7 +28,7 @@ namespace Ark.Framework.Demo
                                                                                                                                         
         // Specific Junk
         Texture2D background { get; set; }
-        InputHandler inputHandler = new InputHandler();
+        //InputHandler inputHandler = new InputHandler();
         Button button1 { get; set; }
         Button button2 { get; set; }
         Panel MyPanel { get; set; }
@@ -102,9 +102,9 @@ namespace Ark.Framework.Demo
             button2.AnchorTo(button1, AnchorAlignment.Below_Center, new PositionOffset(0, 30));
             button2.Clicked += MoveButton1;
 
-            inputHandler.Controls.Add(MyPanel);
-            inputHandler.Controls.Add(button1);
-            inputHandler.Controls.Add(button2);
+            //inputHandler.Controls.Add(MyPanel);
+            //inputHandler.Controls.Add(button1);
+            //inputHandler.Controls.Add(button2);
         }
 
         private void MoveButton1(object sender, EventArgs e)
@@ -171,7 +171,7 @@ namespace Ark.Framework.Demo
 
 
             // TODO: Add your update logic here
-            inputHandler.Update(gameTime);
+            //inputHandler.Update(gameTime);
 
             base.Update(gameTime);
         }

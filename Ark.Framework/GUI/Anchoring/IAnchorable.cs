@@ -5,7 +5,8 @@ namespace Ark.Framework.GUI.Anchoring
 {
     public interface IAnchorable
     {
-        AnchorComponent Anchor { get; }
+        //AnchorComponent Anchor { get; }
+        bool Anchored { get; }
         Vector2 Position { get; set; }
         Rectangle GetAnchorBounds();
         event EventHandler<AnchorMovedArgs> OnPositionChanged;

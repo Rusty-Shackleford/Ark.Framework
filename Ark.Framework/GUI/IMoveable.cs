@@ -6,6 +6,7 @@ namespace Ark.Framework.GUI
 {
     internal interface IMoveable
     {
+        bool Moving { get; }
         void OnDrag(MouseEventArgs e);
         void OnDragStart(MouseEventArgs e);
         void OnDragEnd(MouseEventArgs e);
