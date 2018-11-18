@@ -36,7 +36,7 @@ namespace Ark.Framework.GUI.Controls
 
         #region [ Members ]
         public ControlCollection Children { get; set; }
-        internal InputHandler InputHandler { get; set; }
+        internal CollectionInputHandler InputHandler { get; set; }
         #endregion
 
 
@@ -46,7 +46,7 @@ namespace Ark.Framework.GUI.Controls
             Position = position;
             MovementEnabled = true;
             Children = new ControlCollection();
-            InputHandler = new InputHandler(Children);
+            InputHandler = new CollectionInputHandler(Children);
         }
         #endregion
 

@@ -68,9 +68,10 @@
     <Compile Include="GUI\Controls\ControlStyle.cs" />
     <Compile Include="GUI\IRefresh.cs" />
     <Compile Include="GUI\IInteractive.cs" />
-    <Compile Include="GUI\InputHandler.cs" />
+    <Compile Include="GUI\CollectionInputHandler.cs" />
     <Compile Include="GUI\IMoveable.cs" />
     <Compile Include="IDraw.cs" />
+    <Compile Include="InputHandler.cs" />
     <Compile Include="IUpdate.cs" />
     <Compile Include="PositionOffset.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

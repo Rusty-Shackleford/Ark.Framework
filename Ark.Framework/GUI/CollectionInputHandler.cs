@@ -5,7 +5,7 @@ using MonoGame.Extended.Input.InputListeners;
 
 namespace Ark.Framework.GUI
 {
-    internal class InputHandler : IUpdate
+    internal class CollectionInputHandler : IUpdate
     {
         #region [ Members ]
         private ControlCollection _controls;
@@ -19,7 +19,7 @@ namespace Ark.Framework.GUI
 
 
         #region [ Constructor ]
-        public InputHandler(ControlCollection controls)
+        public CollectionInputHandler(ControlCollection controls)
         {
             _controls = controls;
             mouse.MouseMoved += Hover;
