@@ -51,7 +51,7 @@ namespace Ark.Framework.GUI.Controls
         #endregion
 
 
-        #region [ Children ]
+        #region [ Children Management ]
         /// <summary>
         /// Adds a control to this panel without specific positioning
         /// instructions - you will need to place the control yourself.
@@ -64,7 +64,8 @@ namespace Ark.Framework.GUI.Controls
         }
 
         /// <summary>
-        /// Add a control and anchor it according to AnchorPreference
+        /// Add a control and anchor it according to AnchorPreference.  If no suitable anchor can
+        /// be found, the control is anchored to this panels inside-top-left.
         /// </summary>
         /// <param name="control"><see cref="Control"/> to add.</param>
         /// <param name="pref">Method used to anchor the control to this panel.</param>
@@ -95,7 +96,12 @@ namespace Ark.Framework.GUI.Controls
                 default:
                     break;
             }
-            throw new ArgumentException($"");
+            // Fallback: If no control found, anchor to this panel.
+            if (control.Anchored == false)
+            {
+                control.AnchorTo(this, AnchorAlignment.Inside_Top_Left, offset);
+            }
+            return Add(control);
         }
 
         /// <summary>
@@ -115,6 +121,17 @@ namespace Ark.Framework.GUI.Controls
             }
             throw new ArgumentException($"Could not find anchor {anchorSettings.Anchor.Name} in this panel. " +
                 $"Has it been added?");
+        }
+        
+        /// <summary>
+        /// Remove an existing control from this panel.
+        /// </summary>
+        /// <param name="control">Reference to control that will be removed.</param>
+        /// <returns></returns>
+        public Control Remove(Control control)
+        {
+            Children.Remove(control);
+            return control;
         }
         #endregion
 
