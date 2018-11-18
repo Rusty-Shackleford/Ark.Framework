@@ -12,7 +12,7 @@ namespace Ark.Framework.Demo
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class ArkDemoGame : Game
+    public class PanelTest : Game
     {
         #region [ Members ]
         private GraphicsDeviceManager _graphics;
@@ -24,11 +24,13 @@ namespace Ark.Framework.Demo
         int _screenWidth;
         int _screenHeight;
         bool _screenSizeChanged;
+
+        Panel TestPanel;
         #endregion
 
 
         #region [ Constructor ]
-        public ArkDemoGame()
+        public PanelTest()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -71,6 +73,9 @@ namespace Ark.Framework.Demo
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             GameAssets.LoadContent(Content);
+
+            // PANEL:
+            TestPanel = new Panel(GameAssets.PanelStyle, new Vector2(30, 30));
         }
         #endregion
 
@@ -96,7 +101,6 @@ namespace Ark.Framework.Demo
 
                 ScreenWidth = _screenWidth;
                 ScreenHeight = _screenHeight;
-
             }
 
 

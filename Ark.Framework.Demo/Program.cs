@@ -14,7 +14,7 @@ namespace Ark.Framework.Demo
         [STAThread]
         static void Main()
         {
-            using (var game = new ArkDemoGame())
+            using (var game = new PanelTest())
                 game.Run();
         }
     }
