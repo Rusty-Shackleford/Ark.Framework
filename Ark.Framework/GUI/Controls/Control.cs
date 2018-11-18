@@ -27,7 +27,7 @@ namespace Ark.Framework.GUI.Controls
             Visible = true;
             Enabled = true;
             DefaultStyle = style;
-            _currentStyle = DefaultStyle;
+            currentStyle = DefaultStyle;
             HoveredStyle = DefaultStyle;
             PressedStyle = DefaultStyle;
         }
@@ -101,7 +101,7 @@ namespace Ark.Framework.GUI.Controls
         /// </summary>
         public virtual int Width
         {
-            get { return CurrentStyle.Size.Width; }
+            get { return GetCurrentStyle().Size.Width; }
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Ark.Framework.GUI.Controls
         /// </summary>
         public virtual int Height
         {
-            get { return CurrentStyle.Size.Height; }
+            get { return GetCurrentStyle().Size.Height; }
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace Ark.Framework.GUI.Controls
         {
             get
             {
-                return CurrentStyle.HoverOffset.ApplyToRectangle(Position, CurrentStyle.Size);
+                return GetCurrentStyle().HoverOffset.ApplyToRectangle(Position, GetCurrentStyle().Size);
             }
         }
 
@@ -146,7 +146,7 @@ namespace Ark.Framework.GUI.Controls
         {
             get
             {
-                return CurrentStyle.DraggableOffset.ApplyToRectangle(Position, CurrentStyle.Size);
+                return GetCurrentStyle().DraggableOffset.ApplyToRectangle(Position, GetCurrentStyle().Size);
             }
         }
 
@@ -157,34 +157,26 @@ namespace Ark.Framework.GUI.Controls
         {
             get
             {
-                return CurrentStyle.InteractiveOffset.ApplyToRectangle(Position, CurrentStyle.Size);
+                return GetCurrentStyle().InteractiveOffset.ApplyToRectangle(Position, GetCurrentStyle().Size);
             }
         }
         #endregion
 
 
         #region [ Style ]
-
         public ControlStyle DefaultStyle { get; set; }
         public ControlStyle HoveredStyle { get; set; }
         public ControlStyle PressedStyle { get; set; }
 
-
-        private ControlStyle _currentStyle;
-        public ControlStyle CurrentStyle
+        protected ControlStyle currentStyle;
+        public abstract ControlStyle CurrentStyle();
+        public ControlStyle GetCurrentStyle()
         {
-            get { return _currentStyle; }
-            set
-            {
-                if (value != _currentStyle)
-                {
-                    //TODO: Is there really a use case in which the anchor dimmensions 
-                    // of the control change based on the curent style of it?
-                    if (!_currentStyle.EqualDimmensionsTo(value))
-                        DimmensionChanged?.Invoke(this, EventArgs.Empty);
-                    _currentStyle = value;
-                }
-            }
+            return CurrentStyle();
+        }
+        public void SetCurrentStyle(ControlStyle style)
+        {
+            currentStyle = style;
         }
         #endregion
 
@@ -194,7 +186,6 @@ namespace Ark.Framework.GUI.Controls
         public event EventHandler MouseLeft;
         public event EventHandler MouseDown;
         public event EventHandler MouseUp;
-        public event EventHandler DimmensionChanged;
         public event EventHandler Clicked;
         #endregion
 
@@ -218,7 +209,7 @@ namespace Ark.Framework.GUI.Controls
                 {
                     Pressed = true;
                     if (PressedStyle != null)
-                        CurrentStyle = PressedStyle;
+                        SetCurrentStyle(PressedStyle);
                     MouseDown?.Invoke(this, EventArgs.Empty);
                 }
             }
@@ -231,7 +222,7 @@ namespace Ark.Framework.GUI.Controls
                 if (InteractiveBounds.Contains(e.Position))
                 {
                     Pressed = false;
-                    CurrentStyle = DefaultStyle;
+                    SetCurrentStyle(DefaultStyle);
                     MouseUp?.Invoke(this, EventArgs.Empty);
                     Clicked?.Invoke(this, EventArgs.Empty);
                 }
@@ -249,7 +240,7 @@ namespace Ark.Framework.GUI.Controls
                 {
                     Hovered = true;
                     if (HoveredStyle != null)
-                        CurrentStyle = HoveredStyle;
+                        SetCurrentStyle(HoveredStyle);
                     MouseEntered?.Invoke(this, EventArgs.Empty);
                 }
             }
@@ -261,7 +252,7 @@ namespace Ark.Framework.GUI.Controls
                 if (!HoverBounds.Contains(e.Position))
                 {
                     Hovered = false;
-                    CurrentStyle = DefaultStyle;
+                    SetCurrentStyle(DefaultStyle);
                     MouseLeft?.Invoke(this, EventArgs.Empty);
                 }
             }

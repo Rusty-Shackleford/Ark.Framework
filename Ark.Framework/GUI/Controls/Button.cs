@@ -27,7 +27,7 @@ namespace Ark.Framework.GUI.Controls
         public Button(ControlStyle style, Vector2 position, string label = "") : base(style)
         {
             Position = position;
-            Label = new Label(CurrentStyle, label);
+            Label = new Label(GetCurrentStyle(), label);
             Label.AnchorTo(this, AnchorAlignment.Inside_Middle_Center, PositionOffset.Zero);
         }
 
@@ -42,13 +42,17 @@ namespace Ark.Framework.GUI.Controls
 
         #region [ Members ]
         public Label Label { get; protected set; }
+        public override ControlStyle CurrentStyle()
+        {
+            return GetCurrentStyle();
+        }
         #endregion
 
 
         #region [ Anchoring ]
         public override Rectangle GetAnchorBounds()
         {
-            return CurrentStyle.AnchoringOffset.ApplyToRectangle(Position, CurrentStyle.Size);
+            return GetCurrentStyle().AnchoringOffset.ApplyToRectangle(Position, GetCurrentStyle().Size);
         }
         #endregion
 
@@ -58,7 +62,7 @@ namespace Ark.Framework.GUI.Controls
         {
             if (Visible)
             {
-                spriteBatch.Draw(CurrentStyle.Texture, Position, Color.White);
+                spriteBatch.Draw(GetCurrentStyle().Texture, Position, Color.White);
                 Label.Draw(spriteBatch);
             }
         }

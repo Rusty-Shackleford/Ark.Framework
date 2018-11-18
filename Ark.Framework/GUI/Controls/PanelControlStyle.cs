@@ -10,7 +10,7 @@ namespace Ark.Framework.GUI.Controls
     public class PanelControlStyle : ControlStyle
     {
         #region [ Members ]
-        Viewport Viewport { get; set; }
+        public Viewport Viewport { get; set; }
         #endregion
 
 

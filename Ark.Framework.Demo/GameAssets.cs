@@ -41,7 +41,7 @@ namespace Ark.Framework.Demo
         public static ControlStyle Button { get; private set; }
         public static ControlStyle ButtonHover { get; private set; }
         public static ControlStyle ButtonPressed { get; private set; }
-        public static ControlStyle PanelStyle { get; private set; }
+        public static PanelControlStyle PanelStyle { get; private set; }
 
 
         private static void LoadUIAssets(ContentManager content)
@@ -67,7 +67,8 @@ namespace Ark.Framework.Demo
 
             // PANEL
             var panelTexture = content.Load<Texture2D>(@"UI/Panel");
-            PanelStyle = new ControlStyle(panelTexture)
+            Viewport port = new Viewport(0, 0, panelTexture.Width, panelTexture.Height);
+            PanelStyle = new PanelControlStyle(panelTexture, port)
             {
                 AnchoringOffset = new RectangleOffset(-4, 0, -4, -9),
                 DraggableOffset = new RectangleOffset(-4, 0, -4, -476)

@@ -9,6 +9,7 @@ namespace Ark.Framework.GUI
     {
         #region [ Members ]
         private ControlCollection _controls;
+        private Viewport _viewport;
         private MouseListener mouse = new MouseListener(new MouseListenerSettings());
         //private KeyboardListener keyboard = new KeyboardListener(new KeyboardListenerSettings());
 
@@ -19,7 +20,7 @@ namespace Ark.Framework.GUI
 
 
         #region [ Constructor ]
-        public CollectionInputHandler(ControlCollection controls)
+        public CollectionInputHandler(ControlCollection controls, Viewport viewport)
         {
             _controls = controls;
             mouse.MouseMoved += Hover;

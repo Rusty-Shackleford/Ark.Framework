@@ -29,7 +29,7 @@ namespace Ark.Framework.GUI.Controls
         #region [ MakeClone ]
         public override Control MakeClone()
         {
-            return new Panel(DefaultStyle, Position);
+            return new Panel((PanelControlStyle)DefaultStyle, Position);
         }
         #endregion
 
@@ -39,16 +39,25 @@ namespace Ark.Framework.GUI.Controls
         #region [ Members ]
         public ControlCollection Children { get; set; }
         internal CollectionInputHandler InputHandler { get; set; }
+
+        public override ControlStyle CurrentStyle()
+        {
+            return GetCurrentStyle();
+        }
+        public new PanelControlStyle GetCurrentStyle()
+        {
+            return (PanelControlStyle)currentStyle;
+        }
         #endregion
 
 
         #region [ Constructor ]
-        public Panel(ControlStyle style, Vector2 position) : base(style)
+        public Panel(PanelControlStyle style, Vector2 position) : base(style)
         {
             Position = position;
             MovementEnabled = true;
             Children = new ControlCollection();
-            InputHandler = new CollectionInputHandler(Children);
+            InputHandler = new CollectionInputHandler(Children, GetCurrentStyle().Viewport);
         }
         #endregion
 
@@ -141,7 +150,7 @@ namespace Ark.Framework.GUI.Controls
         #region [ Movement ]
         public Rectangle DragBounds
         {
-            get { return CurrentStyle.DraggableOffset.ApplyToRectangle(Position, CurrentStyle.Size); }
+            get { return GetCurrentStyle().DraggableOffset.ApplyToRectangle(Position, GetCurrentStyle().Size); }
         }
 
         public bool Moving { get; protected set; }
@@ -187,7 +196,7 @@ namespace Ark.Framework.GUI.Controls
         #region [ Anchoring ]
         public override Rectangle GetAnchorBounds()
         {
-            return CurrentStyle.AnchoringOffset.ApplyToRectangle(Position, CurrentStyle.Size);
+            return GetCurrentStyle().AnchoringOffset.ApplyToRectangle(Position, GetCurrentStyle().Size);
         }
         #endregion
 
@@ -205,7 +214,7 @@ namespace Ark.Framework.GUI.Controls
         {
             if (Visible)
             {
-                spriteBatch.Draw(CurrentStyle.Texture, Position, Color.White);
+                spriteBatch.Draw(GetCurrentStyle().Texture, Position, Color.White);
                 for (int i = 0; i < Children.Count; i++)
                 {
                     Children[i].Draw(spriteBatch);

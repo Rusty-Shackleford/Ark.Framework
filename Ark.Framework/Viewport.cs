@@ -21,6 +21,9 @@ namespace Ark.Framework
         }
         #endregion
 
+        #region [ Anchoring ]
+
+        #endregion
 
         #region [ Constructor ]
         public Viewport(Rectangle bounds)

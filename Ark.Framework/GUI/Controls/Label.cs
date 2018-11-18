@@ -33,8 +33,12 @@ namespace Ark.Framework.GUI.Controls
             }
         }
 
-        public override int Width => (int)CurrentStyle.Font.MeasureString(_text).Width;
-        public override int Height => (int)CurrentStyle.Font.MeasureString(_text).Height;
+        public override int Width => (int)GetCurrentStyle().Font.MeasureString(_text).Width;
+        public override int Height => (int)GetCurrentStyle().Font.MeasureString(_text).Height;
+        public override ControlStyle CurrentStyle()
+        {
+            return GetCurrentStyle();
+        }
         #endregion
 
 
@@ -60,7 +64,7 @@ namespace Ark.Framework.GUI.Controls
         {
             if (Visible && !string.IsNullOrEmpty(Text))
             {
-                spriteBatch.DrawString(CurrentStyle.Font, Text, Position, CurrentStyle.FontColor);
+                spriteBatch.DrawString(GetCurrentStyle().Font, Text, Position, GetCurrentStyle().FontColor);
             }
         }
 
