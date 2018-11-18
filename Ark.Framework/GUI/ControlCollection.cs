@@ -56,10 +56,12 @@ namespace Ark.Framework.GUI
         {
             return Math.Abs(FindBottomControl().Bounds.Y - FindTopControl().Bounds.Top);
         }
+
         public float CalcTotalWidth()
         {
             return Math.Abs(FindRightmostControl().Bounds.Right - FindLeftmostControl().Bounds.Left);
         }
+
         public Vector2 CalcTotalSize(Vector2 position)
         {
             return new Vector2(CalcTotalWidth(), CalcTotalHeight());
@@ -69,6 +71,7 @@ namespace Ark.Framework.GUI
         {
             return _controls.LastOrDefault(e => e.InteractiveBounds.Contains(point));
         }
+
         public List<Control> GetItemsAtPoint(Point point)
         {
             return _controls.FindAll(e => e.InteractiveBounds.Contains(point));
@@ -93,18 +96,34 @@ namespace Ark.Framework.GUI
             return found;
         }
 
+        public List<Control> FindControlsInViewport(Rectangle viewport)
+                {
+                    List<Control> found = new List<Control>();
+                    for (int i = 0; i < _controls.Count; i++)
+                    {
+                        if (viewport.Contains(_controls[i].Position))
+                        {
+                            found.Add(_controls[i]);
+                        }
+                    }
+                    return found;
+                }
+
         public Control FindRightmostControl()
         {
             return FindItem((a, b) => a.Bounds.Right > b.Bounds.Right);
         }
+
         public Control FindLeftmostControl()
         {
             return FindItem((a, b) => a.Bounds.Left < b.Bounds.Left);
         }
+
         public Control FindTopControl()
         {
             return FindItem((a, b) => a.Bounds.Top < b.Bounds.Top);
         }
+
         public Control FindBottomControl()
         {
             return FindItem((a, b) => a.Bounds.Bottom > b.Bounds.Bottom);
