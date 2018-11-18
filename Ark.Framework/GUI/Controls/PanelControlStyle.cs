@@ -10,14 +10,14 @@ namespace Ark.Framework.GUI.Controls
     public class PanelControlStyle : ControlStyle
     {
         #region [ Members ]
-        public Viewport Viewport { get; set; }
+        public RectangleOffset ViewportOffset { get; set; }
         #endregion
 
 
         #region [ Constructor ]
-        public PanelControlStyle(Texture2D texture, Viewport viewport) : base(texture)
+        public PanelControlStyle(Texture2D texture, RectangleOffset viewportOffset) : base(texture)
         {
-            Viewport = viewport;
+            ViewportOffset = viewportOffset;
         }
         #endregion
     }

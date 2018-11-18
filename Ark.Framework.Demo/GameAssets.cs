@@ -38,9 +38,9 @@ namespace Ark.Framework.Demo
 
 
         #region [ UI Assets ]
-        public static ControlStyle Button { get; private set; }
-        public static ControlStyle ButtonHover { get; private set; }
-        public static ControlStyle ButtonPressed { get; private set; }
+        public static ControlStyle BtnStyle { get; private set; }
+        public static ControlStyle BtnHoverStyle { get; private set; }
+        public static ControlStyle BtnPressedStyle { get; private set; }
         public static PanelControlStyle PanelStyle { get; private set; }
 
 
@@ -49,17 +49,17 @@ namespace Ark.Framework.Demo
             var btn = content.Load<Texture2D>(@"UI/Button");
             var btnHover = content.Load<Texture2D>(@"UI/ButtonHover");
             var btnPressed = content.Load<Texture2D>(@"UI/ButtonPressed");
-            Button = new ControlStyle(btn)
+            BtnStyle = new ControlStyle(btn)
             {
                 Font = Plumbis_11,
                 FontColor = Color.White
             };
-            ButtonHover = new ControlStyle(btnHover)
+            BtnHoverStyle = new ControlStyle(btnHover)
             {
                 Font = Plumbis_11,
                 FontColor = Color.White
             };
-            ButtonPressed = new ControlStyle(btnPressed)
+            BtnPressedStyle = new ControlStyle(btnPressed)
             {
                 Font = Plumbis_11,
                 FontColor = Color.White
@@ -67,11 +67,11 @@ namespace Ark.Framework.Demo
 
             // PANEL
             var panelTexture = content.Load<Texture2D>(@"UI/Panel");
-            Viewport port = new Viewport(0, 0, panelTexture.Width, panelTexture.Height);
-            PanelStyle = new PanelControlStyle(panelTexture, port)
+            
+            PanelStyle = new PanelControlStyle(panelTexture, new RectangleOffset(-4, -24, -4, 0))
             {
                 AnchoringOffset = new RectangleOffset(-4, 0, -4, -9),
-                DraggableOffset = new RectangleOffset(-4, 0, -4, -476)
+                DraggableOffset = new RectangleOffset(-4, 0, -4, -476),
             };
         }
 

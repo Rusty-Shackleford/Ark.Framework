@@ -52,7 +52,7 @@ namespace Ark.Framework.GUI.Controls
         #region [ Anchoring ]
         public override Rectangle GetAnchorBounds()
         {
-            return GetCurrentStyle().AnchoringOffset.ApplyToRectangle(Position, GetCurrentStyle().Size);
+            return GetCurrentStyle().AnchoringOffset.Apply(Position, GetCurrentStyle().Size);
         }
         #endregion
 

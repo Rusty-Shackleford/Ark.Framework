@@ -41,7 +41,7 @@ namespace Ark.Framework
 
 
         #region [ ApplyToRectangle ]
-        public Rectangle ApplyToRectangle(Rectangle rect)
+        public Rectangle Apply(Rectangle rect)
         {
             return new Rectangle(
                 rect.X + Left_Offset,
@@ -51,7 +51,7 @@ namespace Ark.Framework
                 );
         }
 
-        public Rectangle ApplyToRectangle(Vector2 position, Rectangle rect)
+        public Rectangle Apply(Vector2 position, Rectangle rect)
         {
             return new Rectangle(
                 (int)position.X + Left_Offset,
@@ -61,7 +61,7 @@ namespace Ark.Framework
                 );
         }
 
-        public Rectangle ApplyToRectangle(Vector2 position, Size size)
+        public Rectangle Apply(Vector2 position, Size size)
         {
             return new Rectangle(
                 (int)position.X + Left_Offset,

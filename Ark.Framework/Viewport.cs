@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Ark.Framework.GUI.Anchoring;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,10 @@ namespace Ark.Framework
     /// <summary>
     /// A clipping plane used to describe a viewable area of a render-target surface.
     /// </summary>
-    public class Viewport
+    public class Viewport : IAnchorable
     {
         #region [ Members ]
+        public string Name { get; set; }
         public Vector2 Position { get; set; }
         public Size Size { get; set; }
         public Rectangle Bounds
@@ -21,9 +23,42 @@ namespace Ark.Framework
         }
         #endregion
 
-        #region [ Anchoring ]
 
+        #region [ Anchoring ]
+        public bool Anchored { get; private set; }
+        public Rectangle GetAnchorBounds() { return Bounds; }
+        public event EventHandler<AnchorMovedArgs> OnPositionChanged;
+        private AnchorComponent Anchor { get; set; }
+
+        public void AnchorTo(IAnchorable target, AnchorAlignment alignment, PositionOffset offset)
+        {
+            if (target.GetHashCode() != GetHashCode())
+            {
+                RemoveAnchor();
+                Anchor = new AnchorComponent(target, this, alignment, offset);
+                Position = Anchor.AnchoredPosition;
+                Anchored = true;
+                return;
+            }
+            throw new NotSupportedException("Cannot anchor an object to itself.");
+        }
+
+        public void AnchorTo(AnchorSettings settings)
+        {
+            AnchorTo(settings.Anchor, settings.Alignment, settings.Offset);
+        }
+
+        public void RemoveAnchor()
+        {
+            if (Anchor != null)
+            {
+                Anchor.RemoveAnchor();
+                Anchor = null;
+                Anchored = false;
+            }
+        }
         #endregion
+
 
         #region [ Constructor ]
         public Viewport(Rectangle bounds)

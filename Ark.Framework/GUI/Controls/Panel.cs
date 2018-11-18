@@ -48,6 +48,7 @@ namespace Ark.Framework.GUI.Controls
         {
             return (PanelControlStyle)currentStyle;
         }
+        public Viewport Viewport { get; private set; }
         #endregion
 
 
@@ -57,7 +58,12 @@ namespace Ark.Framework.GUI.Controls
             Position = position;
             MovementEnabled = true;
             Children = new ControlCollection();
-            InputHandler = new CollectionInputHandler(Children, GetCurrentStyle().Viewport);
+
+            Rectangle view = GetCurrentStyle().ViewportOffset.Apply(Position, GetCurrentStyle().Size);
+
+            Viewport = new Viewport(view);
+            Viewport.AnchorTo(this, AnchorAlignment.Inside_Top_Left, new PositionOffset(4, 24));
+            InputHandler = new CollectionInputHandler(Children, Viewport);
         }
         #endregion
 
@@ -150,7 +156,7 @@ namespace Ark.Framework.GUI.Controls
         #region [ Movement ]
         public Rectangle DragBounds
         {
-            get { return GetCurrentStyle().DraggableOffset.ApplyToRectangle(Position, GetCurrentStyle().Size); }
+            get { return GetCurrentStyle().DraggableOffset.Apply(Position, GetCurrentStyle().Size); }
         }
 
         public bool Moving { get; protected set; }
@@ -196,7 +202,7 @@ namespace Ark.Framework.GUI.Controls
         #region [ Anchoring ]
         public override Rectangle GetAnchorBounds()
         {
-            return GetCurrentStyle().AnchoringOffset.ApplyToRectangle(Position, GetCurrentStyle().Size);
+            return GetCurrentStyle().AnchoringOffset.Apply(Position, GetCurrentStyle().Size);
         }
         #endregion
 

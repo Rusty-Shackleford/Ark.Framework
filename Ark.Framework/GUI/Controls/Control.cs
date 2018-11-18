@@ -64,7 +64,12 @@ namespace Ark.Framework.GUI.Controls
                 Anchored = true;
                 return;
             }
-            Console.WriteLine("WARNING: Attempted to anchor this object to itself.");
+            throw new NotSupportedException("Cannot anchor an object to itself.");
+        }
+
+        public void AnchorTo(AnchorSettings settings)
+        {
+            AnchorTo(settings.Anchor, settings.Alignment, settings.Offset);
         }
 
         public void RemoveAnchor()
@@ -135,7 +140,7 @@ namespace Ark.Framework.GUI.Controls
         {
             get
             {
-                return GetCurrentStyle().HoverOffset.ApplyToRectangle(Position, GetCurrentStyle().Size);
+                return GetCurrentStyle().HoverOffset.Apply(Position, GetCurrentStyle().Size);
             }
         }
 
@@ -146,7 +151,7 @@ namespace Ark.Framework.GUI.Controls
         {
             get
             {
-                return GetCurrentStyle().DraggableOffset.ApplyToRectangle(Position, GetCurrentStyle().Size);
+                return GetCurrentStyle().DraggableOffset.Apply(Position, GetCurrentStyle().Size);
             }
         }
 
@@ -157,7 +162,7 @@ namespace Ark.Framework.GUI.Controls
         {
             get
             {
-                return GetCurrentStyle().InteractiveOffset.ApplyToRectangle(Position, GetCurrentStyle().Size);
+                return GetCurrentStyle().InteractiveOffset.Apply(Position, GetCurrentStyle().Size);
             }
         }
         #endregion
@@ -168,12 +173,25 @@ namespace Ark.Framework.GUI.Controls
         public ControlStyle HoveredStyle { get; set; }
         public ControlStyle PressedStyle { get; set; }
 
+        // Current Style uses a decorator pattern for controls that want
+        // to use a derived style. See:
+        // https://stackoverflow.com/questions/5709034/does-c-sharp-support-return-type-covariance
         protected ControlStyle currentStyle;
         public abstract ControlStyle CurrentStyle();
+
+        /// <summary>
+        /// Retrieves the style currently used by this control.
+        /// </summary>
+        /// <returns></returns>
         public ControlStyle GetCurrentStyle()
         {
             return CurrentStyle();
         }
+
+        /// <summary>
+        /// Set the current style of this control.
+        /// </summary>
+        /// <param name="style"></param>
         public void SetCurrentStyle(ControlStyle style)
         {
             currentStyle = style;

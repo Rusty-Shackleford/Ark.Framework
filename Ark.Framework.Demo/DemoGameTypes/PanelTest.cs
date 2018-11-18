@@ -76,6 +76,9 @@ namespace Ark.Framework.Demo
 
             // PANEL:
             TestPanel = new Panel(GameAssets.PanelStyle, new Vector2(30, 30));
+
+            // Create some controls to add to panel:
+            Label label = new Label(GameAssets.BtnStyle, "Window");
         }
         #endregion
 
@@ -110,6 +113,7 @@ namespace Ark.Framework.Demo
                 Exit();
             }
             // UPDATE HERE:
+            TestPanel.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -122,7 +126,7 @@ namespace Ark.Framework.Demo
             GraphicsDevice.Clear(new Color(32, 32, 32));
             _spriteBatch.Begin();
             // DRAW HERE:
-
+            TestPanel.Draw(_spriteBatch);
 
             // END DRAW:
             // Mouse Cursor:  Last to draw to be on top
