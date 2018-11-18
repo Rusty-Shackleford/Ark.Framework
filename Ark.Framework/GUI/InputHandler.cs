@@ -30,6 +30,7 @@ namespace Ark.Framework.GUI
             mouse.MouseDragEnd += MoveEnd;
         }
         #endregion
+        
 
         #region [ Hover ]
         protected virtual void Hover(object sender, MouseEventArgs e)

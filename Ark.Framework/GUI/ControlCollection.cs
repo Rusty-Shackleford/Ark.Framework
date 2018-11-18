@@ -59,12 +59,10 @@ namespace Ark.Framework.GUI
         {
             return Math.Abs(LowestItem().Bounds.Y - HighestItem().Bounds.Top);
         }
-
         public float CalcTotalWidth()
         {
             return Math.Abs(RightmostItem().Bounds.Right - LeftmostItem().Bounds.Left);
         }
-
         public Vector2 CalcTotalSize(Vector2 position)
         {
             return new Vector2(CalcTotalWidth(), CalcTotalHeight());
@@ -74,12 +72,10 @@ namespace Ark.Framework.GUI
         {
             return _controls.LastOrDefault(e => e.InteractiveBounds.Contains(point));
         }
-
         public List<Control> GetItemsAtPoint(Point point)
         {
             return _controls.FindAll(e => e.InteractiveBounds.Contains(point));
         }
-
 
         private Control FindItem(Func<Control, Control, bool> compare)
         {
@@ -100,25 +96,18 @@ namespace Ark.Framework.GUI
             return found;
         }
 
-
         public Control RightmostItem()
         {
             return FindItem((a, b) => a.Bounds.Right > b.Bounds.Right);
         }
-
-
         public Control LeftmostItem()
         {
             return FindItem((a, b) => a.Bounds.Left < b.Bounds.Left);
         }
-
-
         public Control HighestItem()
         {
             return FindItem((a, b) => a.Bounds.Top < b.Bounds.Top);
         }
-
-
         public Control LowestItem()
         {
             return FindItem((a, b) => a.Bounds.Bottom > b.Bounds.Bottom);

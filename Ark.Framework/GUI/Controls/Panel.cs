@@ -9,6 +9,12 @@ using System.Threading.Tasks;
 
 namespace Ark.Framework.GUI.Controls
 {
+    /// <summary>
+    /// A panel is a special control that acts as a container for other controls.
+    /// Graphically, this is typically represented as an in-game window that contains 
+    /// buttons, text, dropdowns and so on.  A panel is a self-sufficient container 
+    /// that handles its own input handling, updating and drawing its children.
+    /// </summary>
     public class Panel : Control, IMoveable
     {
         #region [ MakeClone ]
