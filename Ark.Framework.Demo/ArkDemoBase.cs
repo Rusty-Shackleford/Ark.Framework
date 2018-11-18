@@ -12,7 +12,7 @@ namespace Ark.Framework.Demo
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class ArkDemoGame : Game
+    public class ArkDemoBase : Game
     {
         #region [ Members ]
         private GraphicsDeviceManager _graphics;
@@ -28,7 +28,7 @@ namespace Ark.Framework.Demo
 
 
         #region [ Constructor ]
-        public ArkDemoGame()
+        public ArkDemoBase()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -122,7 +122,7 @@ namespace Ark.Framework.Demo
 
             // END DRAW:
             // Mouse Cursor:  Last to draw to be on top
-            _spriteBatch.Draw(GameAssets.MouseCursor,
+            _spriteBatch.Draw(GameAssets.MouseCursor, 
                 new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Color.White);
             _spriteBatch.End();
             base.Draw(gameTime);

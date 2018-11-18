@@ -41,6 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ArkDemoBase.cs" />
     <Compile Include="ArkDemoGame.cs" />
     <Compile Include="GameAssets.cs" />
     <Compile Include="Program.cs" />
