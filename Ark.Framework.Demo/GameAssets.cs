@@ -37,44 +37,52 @@ namespace Ark.Framework.Demo
         #endregion
 
 
-        #region [ Button Assets ]
-        private static Texture2D ButtonTexture;
-        private static Texture2D ButtonHoverTexture;
-        private static Texture2D ButtonPressedTexture;
-
-        private static void LoadButtonAssets(ContentManager content)
-        {
-            ButtonTexture = content.Load<Texture2D>(@"UI/Button");
-            ButtonHoverTexture = content.Load<Texture2D>(@"UI/ButtonHover");
-            ButtonPressedTexture = content.Load<Texture2D>(@"UI/ButtonPressed");
-            Button = new ControlStyle(ButtonTexture)
-            {
-                Font = Plumbis_11,
-                FontColor = Color.White
-            };
-            ButtonHover = new ControlStyle(ButtonHoverTexture)
-            {
-                Font = Plumbis_11,
-                FontColor = Color.White
-            };
-            ButtonPressed = new ControlStyle(ButtonPressedTexture)
-            {
-                Font = Plumbis_11,
-                FontColor = Color.White
-            };
-        }
-
+        #region [ UI Assets ]
         public static ControlStyle Button { get; private set; }
         public static ControlStyle ButtonHover { get; private set; }
         public static ControlStyle ButtonPressed { get; private set; }
+        public static ControlStyle PanelStyle { get; private set; }
+
+
+        private static void LoadUIAssets(ContentManager content)
+        {
+            var btn = content.Load<Texture2D>(@"UI/Button");
+            var btnHover = content.Load<Texture2D>(@"UI/ButtonHover");
+            var btnPressed = content.Load<Texture2D>(@"UI/ButtonPressed");
+            Button = new ControlStyle(btn)
+            {
+                Font = Plumbis_11,
+                FontColor = Color.White
+            };
+            ButtonHover = new ControlStyle(btnHover)
+            {
+                Font = Plumbis_11,
+                FontColor = Color.White
+            };
+            ButtonPressed = new ControlStyle(btnPressed)
+            {
+                Font = Plumbis_11,
+                FontColor = Color.White
+            };
+
+            // PANEL
+            var panelTexture = content.Load<Texture2D>(@"UI/Panel");
+            PanelStyle = new ControlStyle(panelTexture)
+            {
+                AnchoringOffset = new RectangleOffset(-4, 0, -4, -9),
+                DraggableOffset = new RectangleOffset(-4, 0, -4, -476)
+            };
+        }
+
         #endregion
+
 
         #region [ LoadContent ]
         public static void LoadContent(ContentManager content)
         {
             LoadFonts(content);
             LoadTextures(content);
-            LoadButtonAssets(content);
+            LoadUIAssets(content);
         }
         #endregion
     }

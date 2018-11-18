@@ -6,9 +6,9 @@ namespace Ark.Framework.GUI
 {
     internal interface IMoveable
     {
-        void Drag(MouseEventArgs e);
-        void DragStart(MouseEventArgs e);
-        void DragEnd(MouseEventArgs e);
+        void OnDrag(MouseEventArgs e);
+        void OnDragStart(MouseEventArgs e);
+        void OnDragEnd(MouseEventArgs e);
 
         Rectangle DragBounds { get; }
         //Rectangle DragBounds { get; }

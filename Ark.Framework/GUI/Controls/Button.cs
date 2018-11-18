@@ -23,6 +23,7 @@ namespace Ark.Framework.GUI.Controls
 
         #region [ Constructor ]
         public Button(ControlStyle style) : this(style, Vector2.Zero) { }
+        public Button(ControlStyle style, string label) : this(style, Vector2.Zero, label) { }
         public Button(ControlStyle style, Vector2 position, string label = "") : base(style)
         {
             Position = position;

@@ -55,25 +55,6 @@ namespace Ark.Framework.GUI
 
 
         #region [ Movement ]
-        protected virtual void MoveEnd(object sender, MouseEventArgs e)
-        {
-            if (_movingItem != null)
-            {
-                _movingItem.DragEnd(e);
-                _movingItem = null;
-            }
-        }
-
-
-        protected virtual void Move(object sender, MouseEventArgs e)
-        {
-            if (_movingItem != null)
-            {
-                _movingItem.Drag(e);
-            }
-        }
-
-
         protected virtual void MoveStart(object sender, MouseEventArgs e)
         {
             Control c = Controls.GetItemAtPoint(e.Position);
@@ -85,9 +66,28 @@ namespace Ark.Framework.GUI
                     if (movingItem.DragBounds.Contains(e.Position))
                     {
                         _movingItem = (IMoveable)c;
-                        _movingItem.DragStart(e);
+                        _movingItem.OnDragStart(e);
                     }
                 }
+            }
+        }
+
+
+        protected virtual void Move(object sender, MouseEventArgs e)
+        {
+            if (_movingItem != null)
+            {
+                _movingItem.OnDrag(e);
+            }
+        }
+
+
+        protected virtual void MoveEnd(object sender, MouseEventArgs e)
+        {
+            if (_movingItem != null)
+            {
+                _movingItem.OnDragEnd(e);
+                _movingItem = null;
             }
         }
         #endregion

@@ -3,7 +3,7 @@ using Ark.Framework.GUI.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.BitmapFonts;
+using Ark.Framework.GUI.Anchoring;
 using System;
 using System.Diagnostics;
 
@@ -31,6 +31,7 @@ namespace Ark.Framework.Demo
         InputHandler inputHandler = new InputHandler();
         Button button1 { get; set; }
         Button button2 { get; set; }
+        Panel MyPanel { get; set; }
         #endregion
 
 
@@ -82,27 +83,26 @@ namespace Ark.Framework.Demo
            
             background = GameAssets.Background;
 
+            MyPanel = new Panel(GameAssets.PanelStyle, new Vector2(100, 100));
 
-            button1 = new Button(GameAssets.Button, new Vector2(100, 100))
+
+            button1 = new Button(GameAssets.Button, "My Button Yo")
             {
                 HoveredStyle = GameAssets.ButtonHover,
                 PressedStyle = GameAssets.ButtonPressed,
                 Name = "button1"
             };
-            button1.Label.Text = "My Button Yo";
-            button1.MouseDown += MouseDownTest;
-            button1.MouseUp += MouseUpTest;
-            button1.MouseEntered += MouseEnteredTest;
-            button1.MouseLeft += MouseLeftTest;
-            button1.Clicked += ClickedTest;
+            button1.AnchorTo(MyPanel, AnchorAlignment.Inside_Top_Left, new PositionOffset(10, 10));
+
 
 
             button2 = (Button)button1.MakeClone();
             button2.Name = "button2";
             button2.Label.Text = "Move";
-            button2.AnchorTo(button1, GUI.Anchoring.AnchorAlignment.Below_Center, new PositionOffset(0, 30));
+            button2.AnchorTo(button1, AnchorAlignment.Below_Center, new PositionOffset(0, 30));
             button2.Clicked += MoveButton1;
 
+            inputHandler.Controls.Add(MyPanel);
             inputHandler.Controls.Add(button1);
             inputHandler.Controls.Add(button2);
         }
@@ -188,6 +188,7 @@ namespace Ark.Framework.Demo
             // Background:
             _spriteBatch.Draw(background, Vector2.Zero, Color.White);
 
+            MyPanel.Draw(_spriteBatch);
             button1.Draw(_spriteBatch);
             button2.Draw(_spriteBatch);
             // Mouse Cursor:  Last to draw in GlobalSpriteBatch
