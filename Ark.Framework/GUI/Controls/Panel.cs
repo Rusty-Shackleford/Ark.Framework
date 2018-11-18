@@ -33,6 +33,8 @@ namespace Ark.Framework.GUI.Controls
         }
         #endregion
 
+        //TODO: LEFT OFF HERE
+        // Implement Panel Input Handling and Test.
 
         #region [ Members ]
         public ControlCollection Children { get; set; }

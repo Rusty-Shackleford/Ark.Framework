@@ -63,6 +63,7 @@
     <Compile Include="GUI\Controls\Control.cs" />
     <Compile Include="GUI\Controls\ControlState.cs" />
     <Compile Include="GUI\Controls\Panel.cs" />
+    <Compile Include="GUI\Controls\PanelControlStyle.cs" />
     <Compile Include="GUI\IClickable.cs" />
     <Compile Include="GUI\Controls\Label.cs" />
     <Compile Include="GUI\Controls\ControlStyle.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Size.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="RectangleOffset.cs" />
+    <Compile Include="Viewport.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
