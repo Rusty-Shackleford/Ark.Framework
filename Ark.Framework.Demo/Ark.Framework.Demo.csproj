@@ -68,9 +68,7 @@
     <None Include="app.manifest" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\Controls\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Ark.Framework\Ark.Framework.csproj">
       <Project>{2ad492d1-74a5-4e2d-ad34-9c403932a4ae}</Project>

@@ -44,15 +44,7 @@ namespace Ark.Framework.GUI.Controls
         public Label Label { get; protected set; }
         protected override ControlStyle CurrentStyle()
         {
-            return currentStyle;
-        }
-        #endregion
-
-
-        #region [ Anchoring ]
-        public override Rectangle GetAnchorBounds()
-        {
-            return GetCurrentStyle().AnchoringOffset.Apply(Position, GetCurrentStyle().Size);
+            return _currentStyle;
         }
         #endregion
 

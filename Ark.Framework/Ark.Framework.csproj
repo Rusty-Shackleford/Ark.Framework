@@ -60,6 +60,7 @@
     <Compile Include="GUI\Anchoring\AnchorMovedArgs.cs" />
     <Compile Include="GUI\ControlCollection.cs" />
     <Compile Include="GUI\Controls\Button.cs" />
+    <Compile Include="GUI\Controls\Checkbox.cs" />
     <Compile Include="GUI\Controls\Control.cs" />
     <Compile Include="GUI\Controls\ControlState.cs" />
     <Compile Include="GUI\Controls\Panel.cs" />

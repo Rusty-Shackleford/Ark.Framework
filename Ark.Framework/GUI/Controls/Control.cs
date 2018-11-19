@@ -27,7 +27,7 @@ namespace Ark.Framework.GUI.Controls
             Visible = true;
             Enabled = true;
             DefaultStyle = style;
-            currentStyle = DefaultStyle;
+            _currentStyle = DefaultStyle;
             HoveredStyle = DefaultStyle;
             PressedStyle = DefaultStyle;
         }
@@ -49,8 +49,14 @@ namespace Ark.Framework.GUI.Controls
 
         #region [ Anchoring ]
         public bool Anchored { get; private set; }
-        public abstract Rectangle GetAnchorBounds();
+
+        public virtual Rectangle GetAnchorBounds()
+        {
+            return GetCurrentStyle().AnchoringOffset.Apply(Position, GetCurrentStyle().Size);
+        }
+
         public event EventHandler<AnchorMovedArgs> OnPositionChanged;
+
         protected AnchorComponent Anchor { get; private set; }
 
         public void AnchorTo(IAnchorable target, AnchorAlignment alignment, PositionOffset offset)
@@ -176,7 +182,7 @@ namespace Ark.Framework.GUI.Controls
         // Current Style uses a decorator pattern for controls that want
         // to use a derived style. See:
         // https://stackoverflow.com/questions/5709034/does-c-sharp-support-return-type-covariance
-        protected ControlStyle currentStyle;
+        protected ControlStyle _currentStyle;
         protected abstract ControlStyle CurrentStyle();
 
         /// <summary>
@@ -194,7 +200,7 @@ namespace Ark.Framework.GUI.Controls
         /// <param name="style"></param>
         public void SetCurrentStyle(ControlStyle style)
         {
-            currentStyle = style;
+            _currentStyle = style;
         }
         #endregion
 

@@ -42,12 +42,15 @@ namespace Ark.Framework.Demo
         public static ControlStyle BtnHoverStyle { get; private set; }
         public static ControlStyle BtnPressedStyle { get; private set; }
         public static PanelControlStyle PanelStyle { get; private set; }
-
+        public static ControlStyle Ck_Style { get; private set; }
+        public static ControlStyle Ck_Checked_Sty { get; private set; }
+        public static ControlStyle Ck_Hovered_Sty { get; private set; }
+        public static ControlStyle Ck_Checked_Hovered_Sty { get; private set; }
 
         private static void LoadUIAssets(ContentManager content)
         {
             var btn = content.Load<Texture2D>(@"UI/Button");
-            var btnHover = content.Load<Texture2D>(@"UI/ButtonHover");
+            var btnHover = content.Load<Texture2D>(@"UI/ButtonHovered");
             var btnPressed = content.Load<Texture2D>(@"UI/ButtonPressed");
             BtnStyle = new ControlStyle(btn)
             {
@@ -74,8 +77,21 @@ namespace Ark.Framework.Demo
                 Font = Plumbis_11,
                 FontColor = Color.White
             };
-        }
 
+            // Checkbox:
+            var checkTexture = content.Load<Texture2D>(@"UI/Checkbox");
+            var checkedTexture = content.Load<Texture2D>(@"UI/CheckboxChecked");
+            var checkHoverTexture = content.Load<Texture2D>(@"UI/CheckboxHovered");
+            var checkCheckedHoveredTexture = content.Load<Texture2D>(@"UI/CheckboxCheckedHovered");
+            Ck_Style = new ControlStyle(checkTexture)
+            {
+                Font = Plumbis_11,
+                FontColor = Color.White
+            };
+            Ck_Checked_Sty = new ControlStyle(checkedTexture);
+            Ck_Hovered_Sty = new ControlStyle(checkHoverTexture);
+            Ck_Checked_Hovered_Sty = new ControlStyle(checkCheckedHoveredTexture);
+        }
         #endregion
 
 

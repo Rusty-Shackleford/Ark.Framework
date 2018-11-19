@@ -37,7 +37,7 @@ namespace Ark.Framework.GUI.Controls
         public override int Height => (int)GetCurrentStyle().Font.MeasureString(_text).Height;
         protected override ControlStyle CurrentStyle()
         {
-            return currentStyle;
+            return _currentStyle;
         }
         #endregion
 

@@ -87,6 +87,28 @@ namespace Ark.Framework.Demo
             };
             btn.Clicked += Btn1_Clicked;
             TestPanel.Add(btn, AnchorPreference.Panel, new PositionOffset(20, 30));
+
+            Checkbox box = new Checkbox(GameAssets.Ck_Style, GameAssets.Ck_Checked_Sty);
+            box.HoveredStyle = GameAssets.Ck_Hovered_Sty;
+            box.CheckedHoveredStyle = GameAssets.Ck_Checked_Hovered_Sty;
+            box.Checked += Ck1_Checked;
+            box.Unchecked += Ck1_Unchecked;
+            box.Text = "Not Checked";
+            TestPanel.Add(box, AnchorPreference.BottomControl, new PositionOffset(0, 30));
+        }
+
+
+        private void Ck1_Unchecked(object sender, EventArgs e)
+        {
+            Checkbox ck = (Checkbox)sender;
+            ck.Text = "Not Checked";
+        }
+
+
+        private void Ck1_Checked(object sender, EventArgs e)
+        {
+            Checkbox ck = (Checkbox)sender;
+            ck.Text = "Checked";
         }
 
         private void Btn1_Clicked(object sender, EventArgs e)

@@ -57,7 +57,7 @@ namespace Ark.Framework.GUI.Controls
         }
         public new PanelControlStyle GetCurrentStyle()
         {
-            return (PanelControlStyle)currentStyle;
+            return (PanelControlStyle)_currentStyle;
         }
         public Viewport Viewport { get; private set; }
         #endregion
@@ -112,7 +112,7 @@ namespace Ark.Framework.GUI.Controls
                     break;
                 case AnchorPreference.BottomControl:
                     var b = Children.FindBottomControl();
-                    if (b != null) control.AnchorTo(b, AnchorAlignment.Below_Center, offset);
+                    if (b != null) control.AnchorTo(b, AnchorAlignment.Below_Left, offset);
                     break;
                 case AnchorPreference.RightControl:
                     var r = Children.FindBottomControl();
@@ -207,14 +207,6 @@ namespace Ark.Framework.GUI.Controls
                 Position += e.DistanceMoved;
                 MoveEnded?.Invoke(this, e);
             }
-        }
-        #endregion
-
-
-        #region [ Anchoring ]
-        public override Rectangle GetAnchorBounds()
-        {
-            return GetCurrentStyle().AnchoringOffset.Apply(Position, GetCurrentStyle().Size);
         }
         #endregion
 
