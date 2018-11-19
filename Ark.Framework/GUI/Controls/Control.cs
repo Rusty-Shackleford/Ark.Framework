@@ -3,20 +3,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Input.InputListeners;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Ark.Framework.GUI.Controls
 {
     public abstract class Control : IAnchorable, IRefresh
     {
-        /// <summary>
-        /// Make a new instance of this control with its same settings.
-        /// </summary>
-        /// <returns>A new instance of this control with similar settings.</returns>
-        public abstract Control MakeClone();
-
-
         #region [ Constructor / Initialize ]
         /// <summary>
         /// Create a new control.  Call Refresh() to notify the control that its construction is completed.
@@ -24,12 +15,16 @@ namespace Ark.Framework.GUI.Controls
         /// <param name="style">The default style to be used to render the control.</param>
         protected Control(ControlStyle style)
         {
+            Position = Vector2.Zero;
             Visible = true;
             Enabled = true;
             DefaultStyle = style;
             _currentStyle = DefaultStyle;
             HoveredStyle = DefaultStyle;
             PressedStyle = DefaultStyle;
+
+            LabelAlignment = style.LabelAlignment;
+            LabelOffset = style.LabelOffset;
         }
 
 
@@ -42,6 +37,7 @@ namespace Ark.Framework.GUI.Controls
             {
                 Position = Anchor.AnchoredPosition;
             }
+            Label?.Refresh();
             Initialized = true;
         }
         #endregion
@@ -49,19 +45,17 @@ namespace Ark.Framework.GUI.Controls
 
         #region [ Anchoring ]
         public bool Anchored { get; private set; }
+        protected AnchorComponent Anchor { get; private set; }
+        public event EventHandler<AnchorMovedArgs> PositionChanged;
+        public event EventHandler<AnchorResizedArgs> Resized;
 
         public virtual Rectangle GetAnchorBounds()
         {
             return GetCurrentStyle().AnchoringOffset.Apply(Position, GetCurrentStyle().Size);
         }
 
-        public event EventHandler<AnchorMovedArgs> OnPositionChanged;
-
-        protected AnchorComponent Anchor { get; private set; }
-
         public void AnchorTo(IAnchorable target, AnchorAlignment alignment, PositionOffset offset)
         {
-            // never anchor to yourself, it's dangerous
             if (target.GetHashCode() != GetHashCode())
             {
                 RemoveAnchor();
@@ -78,6 +72,15 @@ namespace Ark.Framework.GUI.Controls
             AnchorTo(settings.Anchor, settings.Alignment, settings.Offset);
         }
 
+        public virtual void OnPositionChanged(AnchorMovedArgs args)
+        {
+            PositionChanged?.Invoke(this, args);
+        }
+
+        public virtual void OnResized(AnchorResizedArgs args)
+        {
+            Resized?.Invoke(this, args);
+        }
         public void RemoveAnchor()
         {
             if (Anchor != null)
@@ -101,7 +104,7 @@ namespace Ark.Framework.GUI.Controls
                 {
                     Vector2 distanceMoved = Vector2.Subtract(value, _position);
                     //var distanceMoved = Vector2.Distance(_position, value);
-                    OnPositionChanged?.Invoke(this, new AnchorMovedArgs(distanceMoved));
+                    OnPositionChanged(new AnchorMovedArgs(distanceMoved));
                     _position = value;
                 }
             }
@@ -171,6 +174,57 @@ namespace Ark.Framework.GUI.Controls
                 return GetCurrentStyle().InteractiveOffset.Apply(Position, GetCurrentStyle().Size);
             }
         }
+        #endregion
+
+
+        #region [ Text Label ]
+        public Label Label { get; protected set; }
+
+        private AnchorAlignment _labelAlignment;
+        public AnchorAlignment LabelAlignment
+        {
+            get { return _labelAlignment; }
+            set
+            {
+                if (_labelAlignment != value)
+                {
+                    _labelAlignment = value;
+                    Label?.Refresh();
+                }
+            }
+        }
+
+        private PositionOffset _labelOffset;
+        public PositionOffset LabelOffset
+        {
+            get { return _labelOffset; }
+            set
+            {
+                if (_labelOffset != value)
+                {
+                    _labelOffset = value;
+                    Label?.Refresh();
+                }
+            }
+        }
+        
+        private string _text;
+        public string Text
+        {
+            get { return _text; }
+            set
+            {
+                if (!string.IsNullOrEmpty(value) && value != _text)
+                {
+                    _text = value;
+                    Label = new Label(DefaultStyle, _text);
+                    Label.AnchorTo(this, LabelAlignment, LabelOffset);
+                }
+            }
+        }
+
+
+        
         #endregion
 
 

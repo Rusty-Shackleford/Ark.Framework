@@ -57,7 +57,7 @@
     <Compile Include="GUI\Anchoring\AnchorAlignment.cs" />
     <Compile Include="GUI\Anchoring\AnchorSettings.cs" />
     <Compile Include="GUI\Anchoring\IAnchorable.cs" />
-    <Compile Include="GUI\Anchoring\AnchorMovedArgs.cs" />
+    <Compile Include="GUI\Anchoring\AnchorEventArgs.cs" />
     <Compile Include="GUI\ControlCollection.cs" />
     <Compile Include="GUI\Controls\Button.cs" />
     <Compile Include="GUI\Controls\Checkbox.cs" />

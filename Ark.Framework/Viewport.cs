@@ -25,7 +25,7 @@ namespace Ark.Framework
                 if (value != _position)
                 {
                     Vector2 distanceMoved = Vector2.Subtract(value, _position);
-                    OnPositionChanged?.Invoke(this, new AnchorMovedArgs(distanceMoved));
+                    PositionChanged?.Invoke(this, new AnchorMovedArgs(distanceMoved));
                     _position = value;
                 }
             }
@@ -42,7 +42,8 @@ namespace Ark.Framework
         #region [ Anchoring ]
         public bool Anchored { get; private set; }
         public Rectangle GetAnchorBounds() { return Bounds; }
-        public event EventHandler<AnchorMovedArgs> OnPositionChanged;
+        public event EventHandler<AnchorMovedArgs> PositionChanged;
+        public event EventHandler<AnchorResizedArgs> Resized;
         private AnchorComponent Anchor { get; set; }
 
         public void AnchorTo(IAnchorable target, AnchorAlignment alignment, PositionOffset offset)
@@ -60,6 +61,16 @@ namespace Ark.Framework
         public void AnchorTo(AnchorSettings settings)
         {
             AnchorTo(settings.Anchor, settings.Alignment, settings.Offset);
+        }
+
+        public virtual void OnPositionChanged(AnchorMovedArgs args)
+        {
+            PositionChanged?.Invoke(this, args);
+        }
+
+        public virtual void OnResized(AnchorResizedArgs args)
+        {
+            Resized?.Invoke(this, args);
         }
 
         public void RemoveAnchor()

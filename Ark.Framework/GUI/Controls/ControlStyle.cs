@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Ark.Framework.GUI.Anchoring;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.BitmapFonts;
 using System.ComponentModel;
@@ -22,6 +23,9 @@ namespace Ark.Framework.GUI.Controls
         public RectangleOffset AnchoringOffset { get; set; }
 
         public bool Initialized { get; private set; }
+
+        public PositionOffset LabelOffset { get; set; }
+        public AnchorAlignment LabelAlignment { get; set; }
         #endregion
 
         #region [ Constructor ]
@@ -32,6 +36,9 @@ namespace Ark.Framework.GUI.Controls
             DraggableOffset = RectangleOffset.Zero;
             HoverOffset = RectangleOffset.Zero;
             AnchoringOffset = RectangleOffset.Zero;
+
+            LabelOffset = PositionOffset.Zero;
+            LabelAlignment = AnchorAlignment.Inside_Middle_Center;
         }
         #endregion
 

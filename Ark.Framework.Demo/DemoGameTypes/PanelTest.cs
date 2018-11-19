@@ -76,24 +76,18 @@ namespace Ark.Framework.Demo
             GameAssets.LoadContent(Content);
 
             // PANEL:
-            TestPanel = new Panel(GameAssets.PanelStyle, new Vector2(30, 30));
-            TestPanel.Title = "Test Panel";
-            TestPanel.Name = "TestPanel";
+            TestPanel = GameAssets.ConstructPanel("TestPanel", "Test Panel");
             // Create some controls to add to panel:
-            Button btn = new Button(GameAssets.BtnStyle, "Click Me")
-            {
-                HoveredStyle = GameAssets.BtnHoverStyle,
-                PressedStyle = GameAssets.BtnPressedStyle
-            };
+            Button btn = GameAssets.ConstructButton("Btn1", "Click Me");
+
             btn.Clicked += Btn1_Clicked;
             TestPanel.Add(btn, AnchorPreference.Panel, new PositionOffset(20, 30));
 
-            Checkbox box = new Checkbox(GameAssets.Ck_Style, GameAssets.Ck_Checked_Sty);
-            box.HoveredStyle = GameAssets.Ck_Hovered_Sty;
-            box.CheckedHoveredStyle = GameAssets.Ck_Checked_Hovered_Sty;
+
+            Checkbox box = GameAssets.ConstructCheckbox("Ck1", "Not Checked");
             box.Checked += Ck1_Checked;
             box.Unchecked += Ck1_Unchecked;
-            box.Text = "Not Checked";
+
             TestPanel.Add(box, AnchorPreference.BottomControl, new PositionOffset(0, 30));
         }
 
@@ -114,7 +108,7 @@ namespace Ark.Framework.Demo
         private void Btn1_Clicked(object sender, EventArgs e)
         {
             buttonClickedCount++;
-            TestPanel.Title = $"Button Clicked {buttonClickedCount.ToString()} times";
+            TestPanel.Text = $"Button Clicked {buttonClickedCount.ToString()} times";
         }
         #endregion
 

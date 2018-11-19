@@ -11,39 +11,17 @@ namespace Ark.Framework.GUI.Controls
 {
     public class Checkbox : Control
     {
-        #region [ MakeClone ]
-        public override Control MakeClone()
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
-
         #region [ Members ]
-        private string _text;
-        public string Text
-        {
-            get { return _text; }
-            set
-            {
-                if (value != _text)
-                {
-                    _text = value;
-                    Label = new Label(DefaultStyle, _text);
-                    Label.AnchorTo(this, Anchoring.AnchorAlignment.Outside_Right_Middle, new PositionOffset(10, 0));
-                }
-            }
-        }
-        private Label Label { get; set; }
         protected override ControlStyle CurrentStyle()
         {
-            if (Hovered && IsChecked)
-                return CheckedHoveredStyle;
-            if (IsChecked)
-                return CheckedStyle;
-            if (Hovered)
-                return HoveredStyle;
-            return DefaultStyle;
+            return _currentStyle;
+            //if (Hovered && IsChecked)
+            //    return CheckedHoveredStyle;
+            //if (IsChecked)
+            //    return CheckedStyle;
+            //if (Hovered)
+            //    return HoveredStyle;
+            //return DefaultStyle;
         }
         public ControlStyle CheckedStyle { get; set; }
         public ControlStyle CheckedHoveredStyle { get; set; }
@@ -51,48 +29,50 @@ namespace Ark.Framework.GUI.Controls
 
 
         #region [ Constructor ]
-        public Checkbox(ControlStyle style, ControlStyle checkedStyle) : base(style)
+        public Checkbox(ControlStyle style, ControlStyle ckStyle, ControlStyle ckHovStyle) : base(style)
         {
-            CheckedStyle = checkedStyle;
-            CheckedHoveredStyle = HoveredStyle;
+            CheckedStyle = ckStyle;
+            CheckedHoveredStyle = ckHovStyle;
         }
         #endregion
 
 
         #region [ Check Events ]
-        private bool _isChecked;
-        public bool IsChecked
-        {
-            get { return _isChecked; }
-            set
-            {
-                if (_isChecked && !value)
-                {
-                    Unchecked?.Invoke(this, EventArgs.Empty);
-                    SetCurrentStyle(DefaultStyle);
-                }
-                if (!_isChecked && value)
-                {
-                    Checked?.Invoke(this, EventArgs.Empty);
-                    SetCurrentStyle(CheckedStyle);
-                }
-                _isChecked = value;
-            }
-        }
+        public bool IsChecked { get; protected set; }
 
         public event EventHandler Checked;
         public event EventHandler Unchecked;
 
         public override void OnMouseUp(MouseEventArgs e)
         {
+            // if mouse is within interactive bounds and pressed and enabled
+            // if we WERE checked
+            // TODO: Left off Here!  The Styles and events aren't right for checkbox.
+            // Part of the problem is CurrentStyle() function... disagreements between that and
+            // the OnEvent methods as well as the ones offered by base class... those 
+            // may need to be overwritten.
             if (Enabled && Pressed)
             {
                 if (InteractiveBounds.Contains(e.Position))
                 {
-                    IsChecked = !IsChecked;
+                    Pressed = false;
+                    if (IsChecked)
+                    {
+                        IsChecked = false;
+                        SetCurrentStyle(HoveredStyle);
+                        Unchecked?.Invoke(this, EventArgs.Empty);
+                        return;
+                    }
+
+                    if (!IsChecked)
+                    {
+                        IsChecked = true;
+                        SetCurrentStyle(CheckedHoveredStyle);
+                        Checked?.Invoke(this, EventArgs.Empty);
+                        return;
+                    }
                 }
             }
-            base.OnMouseUp(e);
         }
         #endregion
 

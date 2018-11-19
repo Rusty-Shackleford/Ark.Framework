@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Ark.Framework.GUI.Anchoring;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace Ark.Framework.GUI.Controls
         public PanelControlStyle(Texture2D texture, RectangleOffset viewportOffset) : base(texture)
         {
             ViewportOffset = viewportOffset;
+            LabelOffset = PositionOffset.Zero;
+            LabelAlignment = AnchorAlignment.Inside_Top_Center;
         }
         #endregion
     }

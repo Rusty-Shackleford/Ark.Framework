@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.BitmapFonts;
-
+using System;
 
 namespace Ark.Framework.Demo
 {
@@ -41,56 +41,147 @@ namespace Ark.Framework.Demo
         public static ControlStyle BtnStyle { get; private set; }
         public static ControlStyle BtnHoverStyle { get; private set; }
         public static ControlStyle BtnPressedStyle { get; private set; }
+
         public static PanelControlStyle PanelStyle { get; private set; }
+
         public static ControlStyle Ck_Style { get; private set; }
-        public static ControlStyle Ck_Checked_Sty { get; private set; }
-        public static ControlStyle Ck_Hovered_Sty { get; private set; }
-        public static ControlStyle Ck_Checked_Hovered_Sty { get; private set; }
+        public static ControlStyle Ck_Checked_Style { get; private set; }
+        public static ControlStyle Ck_Hovered_Style { get; private set; }
+        public static ControlStyle Ck_CheckedHovered_Style { get; private set; }
 
         private static void LoadUIAssets(ContentManager content)
         {
-            var btn = content.Load<Texture2D>(@"UI/Button");
-            var btnHover = content.Load<Texture2D>(@"UI/ButtonHovered");
-            var btnPressed = content.Load<Texture2D>(@"UI/ButtonPressed");
-            BtnStyle = new ControlStyle(btn)
+            #region [ Load Button Styles ]
+            BtnStyle = new ControlStyle(content.Load<Texture2D>(@"UI/Button"))
+            {
+                Font = Plumbis_11,
+                FontColor = Color.White,
+                LabelAlignment = GUI.Anchoring.AnchorAlignment.Inside_Middle_Center,
+                LabelOffset = PositionOffset.Zero
+            };
+            BtnHoverStyle = new ControlStyle(content.Load<Texture2D>(@"UI/ButtonHovered"))
             {
                 Font = Plumbis_11,
                 FontColor = Color.White
             };
-            BtnHoverStyle = new ControlStyle(btnHover)
+            BtnPressedStyle = new ControlStyle(content.Load<Texture2D>(@"UI/ButtonPressed"))
             {
                 Font = Plumbis_11,
                 FontColor = Color.White
             };
-            BtnPressedStyle = new ControlStyle(btnPressed)
-            {
-                Font = Plumbis_11,
-                FontColor = Color.White
-            };
+            #endregion
 
-            // PANEL
+
+            #region [ Load Panel Styles ]
             var panelTexture = content.Load<Texture2D>(@"UI/Panel");
             PanelStyle = new PanelControlStyle(panelTexture, new RectangleOffset(-4, -24, -4, 0))
             {
                 AnchoringOffset = new RectangleOffset(-4, 0, -4, -9),
                 DraggableOffset = new RectangleOffset(-4, 0, -4, -476),
                 Font = Plumbis_11,
-                FontColor = Color.White
+                FontColor = Color.White,
+                LabelOffset = new PositionOffset(0, 5)
+            };
+            #endregion
+
+
+            #region [ Load Checkbox Styles ]
+            Ck_Style = new ControlStyle(content.Load<Texture2D>(@"UI/Checkbox"))
+            {
+                Font = Plumbis_11,
+                FontColor = Color.White,
+                LabelAlignment = GUI.Anchoring.AnchorAlignment.Outside_Right_Middle,
+                LabelOffset = new PositionOffset(8, 0)
             };
 
-            // Checkbox:
-            var checkTexture = content.Load<Texture2D>(@"UI/Checkbox");
-            var checkedTexture = content.Load<Texture2D>(@"UI/CheckboxChecked");
-            var checkHoverTexture = content.Load<Texture2D>(@"UI/CheckboxHovered");
-            var checkCheckedHoveredTexture = content.Load<Texture2D>(@"UI/CheckboxCheckedHovered");
-            Ck_Style = new ControlStyle(checkTexture)
+            Ck_Checked_Style = new ControlStyle(content.Load<Texture2D>(@"UI/CheckboxChecked"))
             {
                 Font = Plumbis_11,
                 FontColor = Color.White
             };
-            Ck_Checked_Sty = new ControlStyle(checkedTexture);
-            Ck_Hovered_Sty = new ControlStyle(checkHoverTexture);
-            Ck_Checked_Hovered_Sty = new ControlStyle(checkCheckedHoveredTexture);
+
+            Ck_Hovered_Style = new ControlStyle(content.Load<Texture2D>(@"UI/CheckboxHovered"))
+            {
+                Font = Plumbis_11,
+                FontColor = Color.White
+            };
+
+            Ck_CheckedHovered_Style = new ControlStyle(content.Load<Texture2D>(@"UI/CheckboxCheckedHovered"))
+            {
+                Font = Plumbis_11,
+                FontColor = Color.White
+            };
+            #endregion
+
+        }
+        #endregion
+
+
+        #region [ Control Construction ]
+        // TODO: The refreshes after each creation may not be strictly necessary.
+        // When time, determine if can be removed.
+
+        /// <summary>
+        /// Create a new Checkbox instance with the style of this game's assets.
+        /// </summary>
+        /// <param name="name">Name Identifier</param>
+        /// <param name="text">Optional Label Text</param>
+        /// <returns></returns>
+        public static Checkbox ConstructCheckbox(string name, string text = "")
+        {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException($"Checkbox requires a name.");
+
+            Checkbox ck = new Checkbox(Ck_Style, Ck_Checked_Style, Ck_CheckedHovered_Style)
+            {
+                HoveredStyle = Ck_Hovered_Style,
+                Name = name,
+                Text = text
+            };
+            ck.Refresh();
+            return ck;
+        }
+
+        /// <summary>
+        /// Create a new Panel instance with the style of this game's assets.
+        /// </summary>
+        /// <param name="name">Name Identifier</param>
+        /// <param name="text">Optional Label Text</param>
+        /// <returns></returns>
+        public static Panel ConstructPanel(string name, string text = "")
+        {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException($"Panel requires a name.");
+
+            Panel p = new Panel(PanelStyle)
+            {
+                Name = name,
+                Text = text
+            };
+            p.Refresh();
+            return p;
+        }
+
+        /// <summary>
+        /// Create a new Panel instance with the style of this game's assets.
+        /// </summary>
+        /// <param name="name">Name Identifier</param>
+        /// <param name="text">Optional Label Text</param>
+        /// <returns></returns>
+        public static Button ConstructButton(string name, string text = "")
+        {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException($"Button requires a name.");
+
+            Button b = new Button(BtnStyle)
+            {
+                HoveredStyle = BtnHoverStyle,
+                PressedStyle = BtnPressedStyle,
+                Name = name,
+                Text = text
+            };
+            b.Refresh();
+            return b;
         }
         #endregion
 

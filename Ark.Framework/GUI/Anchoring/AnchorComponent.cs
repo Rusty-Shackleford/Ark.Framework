@@ -35,7 +35,7 @@ namespace Ark.Framework.GUI.Anchoring
             _owner = owner;
             Alignment = alignment;
             Offset = offset;
-            _target.OnPositionChanged += OnAnchorMoved;
+            _target.PositionChanged += OnAnchorMoved;
         }
         #endregion
 
@@ -53,13 +53,18 @@ namespace Ark.Framework.GUI.Anchoring
         #endregion
 
 
+        private void OnDimmensionsChanged(object sender, AnchorResizedArgs e)
+        {
+            _owner.Position = AnchoredPosition;
+        }
+
         #region [ RemoveAnchor ]
         /// <summary>
         /// Unsubscribe this object from Anchoring Events
         /// </summary>
         public void RemoveAnchor()
         {
-            _target.OnPositionChanged -= OnAnchorMoved;
+            _target.PositionChanged -= OnAnchorMoved;
         }
         #endregion
 

@@ -23,31 +23,7 @@ namespace Ark.Framework.GUI.Controls
     /// </summary>
     public class Panel : Control, IMoveable, IUpdate
     {
-        #region [ MakeClone ]
-        public override Control MakeClone()
-        {
-            return new Panel((PanelControlStyle)DefaultStyle, Position);
-        }
-        #endregion
-
-
         #region [ Members ]
-        private string _title;
-        public string Title
-        {
-            get { return _title; }
-            set
-            {
-                if(value != _title)
-                {
-                    _title = value;
-                    Label = new Label(GetCurrentStyle(), _title);
-                    Label.AnchorTo(this, AnchorAlignment.Inside_Top_Center, new PositionOffset(0, 5));
-                }
-
-            }
-        }
-        private Label Label { get; set; }
         protected ControlCollection Children { get; set; }
         internal CollectionInputHandler _childrenInputHandler { get; set; }
         private readonly InputHandler _myInputHandler;
@@ -64,9 +40,8 @@ namespace Ark.Framework.GUI.Controls
 
 
         #region [ Constructor ]
-        public Panel(PanelControlStyle style, Vector2 position) : base(style)
+        public Panel(PanelControlStyle style) : base(style)
         {
-            Position = position;
             MovementEnabled = true;
             Children = new ControlCollection();
 
