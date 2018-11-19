@@ -3,10 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Input.InputListeners;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Ark.Framework.GUI.Controls
 {
@@ -33,8 +30,6 @@ namespace Ark.Framework.GUI.Controls
         }
         #endregion
 
-        //TODO: LEFT OFF HERE
-        // Implement Panel Input Handling and Test.
 
         #region [ Members ]
         private string _title;

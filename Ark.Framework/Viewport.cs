@@ -15,7 +15,22 @@ namespace Ark.Framework
     {
         #region [ Members ]
         public string Name { get; set; }
-        public Vector2 Position { get; set; }
+
+        private Vector2 _position;
+        public Vector2 Position
+        {
+            get { return _position; }
+            set
+            {
+                if (value != _position)
+                {
+                    Vector2 distanceMoved = Vector2.Subtract(value, _position);
+                    OnPositionChanged?.Invoke(this, new AnchorMovedArgs(distanceMoved));
+                    _position = value;
+                }
+            }
+        }
+
         public Size Size { get; set; }
         public Rectangle Bounds
         {
@@ -42,7 +57,6 @@ namespace Ark.Framework
             }
             throw new NotSupportedException("Cannot anchor an object to itself.");
         }
-
         public void AnchorTo(AnchorSettings settings)
         {
             AnchorTo(settings.Anchor, settings.Alignment, settings.Offset);
@@ -79,7 +93,5 @@ namespace Ark.Framework
             Size = size;
         }
         #endregion
-
-
     }
 }

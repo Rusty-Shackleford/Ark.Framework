@@ -23,6 +23,7 @@ namespace Ark.Framework.GUI
         public CollectionInputHandler(ControlCollection controls, Viewport viewport)
         {
             _controls = controls;
+            _viewport = viewport;
             mouse.MouseMoved += Hover;
             mouse.MouseDown += OnMouseDown;
             mouse.MouseUp += OnMouseUp;
@@ -32,7 +33,7 @@ namespace Ark.Framework.GUI
             mouse.MouseDragEnd += MoveEnd;
         }
         #endregion
-        
+
 
         #region [ Hover ]
         protected virtual void Hover(object sender, MouseEventArgs e)
@@ -46,13 +47,17 @@ namespace Ark.Framework.GUI
                 }
             }
 
-            Control c = _controls.GetItemAtPoint(e.Position);
-
-            if (c != null)
+            if (_viewport.Bounds.Contains(e.Position))
             {
-                _hoveredItem = c;
-                _hoveredItem.OnMouseEntered(e);
+                Control c = _controls.GetItemAtPoint(e.Position);
+
+                if (c != null)
+                {
+                    _hoveredItem = c;
+                    _hoveredItem.OnMouseEntered(e);
+                }
             }
+
         }
         #endregion
 
@@ -60,24 +65,29 @@ namespace Ark.Framework.GUI
         #region [ Movement ]
         protected virtual void MoveStart(object sender, MouseEventArgs e)
         {
-            Control c = _controls.GetItemAtPoint(e.Position);
-            if (_movingItem == null && c != null)
+            if (_viewport.Bounds.Contains(e.Position))
             {
-                if (c is IMoveable)
+                Control c = _controls.GetItemAtPoint(e.Position);
+                if (_movingItem == null && c != null)
                 {
-                    IMoveable movingItem = (IMoveable)c;
-                    if (movingItem.DragBounds.Contains(e.Position))
+                    if (c is IMoveable)
                     {
-                        _movingItem = (IMoveable)c;
-                        _movingItem.OnDragStart(e);
+                        IMoveable movingItem = (IMoveable)c;
+                        if (movingItem.DragBounds.Contains(e.Position))
+                        {
+                            _movingItem = (IMoveable)c;
+                            _movingItem.OnDragStart(e);
+                        }
                     }
                 }
             }
+
         }
 
 
         protected virtual void Move(object sender, MouseEventArgs e)
         {
+            //TODO: May need to implement Viewport check
             if (_movingItem != null)
             {
                 _movingItem.OnDrag(e);
@@ -87,6 +97,7 @@ namespace Ark.Framework.GUI
 
         protected virtual void MoveEnd(object sender, MouseEventArgs e)
         {
+            //TODO: May need to implement Viewport check
             if (_movingItem != null)
             {
                 _movingItem.OnDragEnd(e);
@@ -99,12 +110,16 @@ namespace Ark.Framework.GUI
         #region [ Mouse Up/Down ]
         protected virtual void OnMouseDown(object sender, MouseEventArgs e)
         {
-            Control c = _controls.GetItemAtPoint(e.Position);
-            if (c != null)
+            if (_viewport.Bounds.Contains(e.Position))
             {
-                _pressedItem = c;
-                _pressedItem.OnMouseDown(e);
+                Control c = _controls.GetItemAtPoint(e.Position);
+                if (c != null)
+                {
+                    _pressedItem = c;
+                    _pressedItem.OnMouseDown(e);
+                }
             }
+
         }
 
         protected virtual void OnMouseUp(object sender, MouseEventArgs e)
