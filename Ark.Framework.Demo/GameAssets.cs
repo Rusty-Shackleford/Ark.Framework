@@ -67,11 +67,12 @@ namespace Ark.Framework.Demo
 
             // PANEL
             var panelTexture = content.Load<Texture2D>(@"UI/Panel");
-            
             PanelStyle = new PanelControlStyle(panelTexture, new RectangleOffset(-4, -24, -4, 0))
             {
                 AnchoringOffset = new RectangleOffset(-4, 0, -4, -9),
                 DraggableOffset = new RectangleOffset(-4, 0, -4, -476),
+                Font = Plumbis_11,
+                FontColor = Color.White
             };
         }
 

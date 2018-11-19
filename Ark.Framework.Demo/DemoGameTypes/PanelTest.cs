@@ -26,6 +26,7 @@ namespace Ark.Framework.Demo
         bool _screenSizeChanged;
 
         Panel TestPanel;
+        int buttonClickedCount;
         #endregion
 
 
@@ -76,9 +77,22 @@ namespace Ark.Framework.Demo
 
             // PANEL:
             TestPanel = new Panel(GameAssets.PanelStyle, new Vector2(30, 30));
-
+            TestPanel.Title = "Test Panel";
+            TestPanel.Name = "TestPanel";
             // Create some controls to add to panel:
-            Label label = new Label(GameAssets.BtnStyle, "Window");
+            Button btn = new Button(GameAssets.BtnStyle, "Click Me")
+            {
+                HoveredStyle = GameAssets.BtnHoverStyle,
+                PressedStyle = GameAssets.BtnPressedStyle
+            };
+            btn.Clicked += Btn1_Clicked;
+            TestPanel.Add(btn, AnchorPreference.Panel, new PositionOffset(20, 30));
+        }
+
+        private void Btn1_Clicked(object sender, EventArgs e)
+        {
+            buttonClickedCount++;
+            TestPanel.Title = $"Button Clicked {buttonClickedCount.ToString()} times";
         }
         #endregion
 

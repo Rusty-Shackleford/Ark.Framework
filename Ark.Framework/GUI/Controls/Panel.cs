@@ -37,10 +37,26 @@ namespace Ark.Framework.GUI.Controls
         // Implement Panel Input Handling and Test.
 
         #region [ Members ]
-        public ControlCollection Children { get; set; }
-        internal CollectionInputHandler InputHandler { get; set; }
+        private string _title;
+        public string Title
+        {
+            get { return _title; }
+            set
+            {
+                if(value != _title)
+                {
+                    _title = value;
+                    Label = new Label(GetCurrentStyle(), _title);
+                    Label.AnchorTo(this, AnchorAlignment.Inside_Top_Center, new PositionOffset(0, 5));
+                }
 
-        public override ControlStyle CurrentStyle()
+            }
+        }
+        private Label Label { get; set; }
+        protected ControlCollection Children { get; set; }
+        internal CollectionInputHandler _childrenInputHandler { get; set; }
+        private readonly InputHandler _myInputHandler;
+        protected override ControlStyle CurrentStyle()
         {
             return GetCurrentStyle();
         }
@@ -63,7 +79,8 @@ namespace Ark.Framework.GUI.Controls
 
             Viewport = new Viewport(view);
             Viewport.AnchorTo(this, AnchorAlignment.Inside_Top_Left, new PositionOffset(4, 24));
-            InputHandler = new CollectionInputHandler(Children, Viewport);
+            _childrenInputHandler = new CollectionInputHandler(Children, Viewport);
+            _myInputHandler = new InputHandler(this);
         }
         #endregion
 
@@ -139,7 +156,7 @@ namespace Ark.Framework.GUI.Controls
             throw new ArgumentException($"Could not find anchor {anchorSettings.Anchor.Name} in this panel. " +
                 $"Has it been added?");
         }
-        
+
         /// <summary>
         /// Remove an existing control from this panel.
         /// </summary>
@@ -210,7 +227,8 @@ namespace Ark.Framework.GUI.Controls
         #region [ Update ]
         public void Update(GameTime gameTime)
         {
-            InputHandler.Update(gameTime);
+            _myInputHandler.Update(gameTime);
+            _childrenInputHandler.Update(gameTime);
         }
         #endregion
 
@@ -221,6 +239,7 @@ namespace Ark.Framework.GUI.Controls
             if (Visible)
             {
                 spriteBatch.Draw(GetCurrentStyle().Texture, Position, Color.White);
+                Label?.Draw(spriteBatch);
                 for (int i = 0; i < Children.Count; i++)
                 {
                     Children[i].Draw(spriteBatch);

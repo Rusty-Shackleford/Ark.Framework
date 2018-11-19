@@ -42,9 +42,9 @@ namespace Ark.Framework.GUI.Controls
 
         #region [ Members ]
         public Label Label { get; protected set; }
-        public override ControlStyle CurrentStyle()
+        protected override ControlStyle CurrentStyle()
         {
-            return GetCurrentStyle();
+            return currentStyle;
         }
         #endregion
 

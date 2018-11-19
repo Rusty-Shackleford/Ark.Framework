@@ -177,7 +177,7 @@ namespace Ark.Framework.GUI.Controls
         // to use a derived style. See:
         // https://stackoverflow.com/questions/5709034/does-c-sharp-support-return-type-covariance
         protected ControlStyle currentStyle;
-        public abstract ControlStyle CurrentStyle();
+        protected abstract ControlStyle CurrentStyle();
 
         /// <summary>
         /// Retrieves the style currently used by this control.
@@ -203,7 +203,6 @@ namespace Ark.Framework.GUI.Controls
         public event EventHandler MouseEntered;
         public event EventHandler MouseLeft;
         public event EventHandler MouseDown;
-        public event EventHandler MouseUp;
         public event EventHandler Clicked;
         #endregion
 
@@ -241,7 +240,6 @@ namespace Ark.Framework.GUI.Controls
                 {
                     Pressed = false;
                     SetCurrentStyle(DefaultStyle);
-                    MouseUp?.Invoke(this, EventArgs.Empty);
                     Clicked?.Invoke(this, EventArgs.Empty);
                 }
             }
