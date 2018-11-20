@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Ark.Framework.GUI.Anchoring;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using MonoGame.Extended.BitmapFonts;
-using Ark.Framework.GUI.Anchoring;
+
 
 namespace Ark.Framework.GUI.Controls
 {
@@ -65,7 +65,5 @@ namespace Ark.Framework.GUI.Controls
         }
 
         #endregion
-
-
     }
 }

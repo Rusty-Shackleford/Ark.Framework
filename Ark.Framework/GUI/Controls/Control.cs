@@ -232,6 +232,7 @@ namespace Ark.Framework.GUI.Controls
         public ControlStyle DefaultStyle { get; set; }
         public ControlStyle HoveredStyle { get; set; }
         public ControlStyle PressedStyle { get; set; }
+        public ControlStyle HoveredPressedStyle { get; set; }
 
         // Current Style uses a decorator pattern for controls that want
         // to use a derived style. See:
@@ -274,6 +275,8 @@ namespace Ark.Framework.GUI.Controls
         public bool Hovered { get; protected set; }
         public bool Initialized { get; protected set; }
         public string Name { get; set; }
+
+        //public abstract ControlState GetState();
         #endregion
 
 
