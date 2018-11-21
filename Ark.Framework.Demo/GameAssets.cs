@@ -42,6 +42,7 @@ namespace Ark.Framework.Demo
         public static ControlStyle BtnHoverStyle { get; private set; }
         public static ControlStyle BtnPressedStyle { get; private set; }
         public static ControlStyle BtnHoveredPressedStyle { get; private set; }
+
         public static PanelControlStyle PanelStyle { get; private set; }
 
         public static ControlStyle Ck_Style { get; private set; }
