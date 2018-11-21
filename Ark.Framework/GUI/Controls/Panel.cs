@@ -38,6 +38,7 @@ namespace Ark.Framework.GUI.Controls
         }
         #endregion
 
+
         #region [ Constructor ]
         public Panel(PanelControlStyle style) : base(style)
         {
@@ -73,28 +74,29 @@ namespace Ark.Framework.GUI.Controls
         /// <param name="control"><see cref="Control"/> to add.</param>
         /// <param name="pref">Method used to anchor the control to this panel.</param>
         /// <param name="offset">Offset from this panel.</param>
-        public Control Add(Control control, AnchorPreference pref, PositionOffset offset)
+        public Control Add(Control control, AnchorPreference pref, 
+            PositionOffset offset, AnchorAlignment alignment = AnchorAlignment.Below_Center)
         {
             switch (pref)
             {
                 case AnchorPreference.Panel:
-                    control.AnchorTo(this, AnchorAlignment.Inside_Top_Left, offset);
+                    control.AnchorTo(this, alignment, offset);
                     break;
                 case AnchorPreference.TopControl:
                     var t = Children.FindTopControl();
-                    if (t != null) control.AnchorTo(t, AnchorAlignment.Below_Center, offset);
+                    if (t != null) control.AnchorTo(t, alignment, offset);
                     break;
                 case AnchorPreference.BottomControl:
                     var b = Children.FindBottomControl();
-                    if (b != null) control.AnchorTo(b, AnchorAlignment.Below_Left, offset);
+                    if (b != null) control.AnchorTo(b, alignment, offset);
                     break;
                 case AnchorPreference.RightControl:
                     var r = Children.FindBottomControl();
-                    if (r != null) control.AnchorTo(r, AnchorAlignment.Below_Center, offset);
+                    if (r != null) control.AnchorTo(r, alignment, offset);
                     break;
                 case AnchorPreference.LeftControl:
                     var l = Children.FindBottomControl();
-                    if (l != null) control.AnchorTo(l, AnchorAlignment.Below_Center, offset);
+                    if (l != null) control.AnchorTo(l, alignment, offset);
                     break;
                 default:
                     break;
@@ -135,6 +137,12 @@ namespace Ark.Framework.GUI.Controls
         {
             Children.Remove(control);
             return control;
+        }
+
+
+        public Control FindControlByName(string name)
+        {
+            return Children.FindControlByName(name);
         }
         #endregion
 

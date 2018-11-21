@@ -27,6 +27,8 @@ namespace Ark.Framework.Demo
 
         Panel TestPanel;
         int buttonClickedCount;
+
+        Label LabelStatus;
         #endregion
 
 
@@ -77,20 +79,45 @@ namespace Ark.Framework.Demo
 
             // PANEL:
             TestPanel = GameAssets.ConstructPanel("TestPanel", "Test Panel");
+            TestPanel.MoveStarted += Panel_MoveStarted;
+            TestPanel.MoveEnded += Panel_MoveEnded;
+            TestPanel.Moved += Panel_Moved;
+
+
+            // Status Label:
+            LabelStatus = new Label(GameAssets.BtnStyle, "Status Message");
+            TestPanel.Add(LabelStatus, AnchorPreference.Panel, new PositionOffset(0, 35), AnchorAlignment.Inside_Top_Right);
+
             // Create some controls to add to panel:
             Button btn = GameAssets.ConstructButton("Btn1", "Click Me");
 
             btn.Clicked += Btn1_Clicked;
-            TestPanel.Add(btn, AnchorPreference.Panel, new PositionOffset(20, 30));
+            TestPanel.Add(btn, AnchorPreference.Panel, new PositionOffset(20, 30), AnchorAlignment.Inside_Top_Left);
 
 
             Checkbox box = GameAssets.ConstructCheckbox("Ck1", "Not Checked");
             box.Checked += Ck1_Checked;
             box.Unchecked += Ck1_Unchecked;
 
-            TestPanel.Add(box, AnchorPreference.BottomControl, new PositionOffset(0, 30));
+            TestPanel.Add(box, AnchorPreference.BottomControl, new PositionOffset(0, 20), AnchorAlignment.Below_Left);
         }
 
+        private void Panel_MoveStarted(object sender, EventArgs e)
+        {
+            //TODO: FIX THIS - Text is for all the Controls that have a Text value. Label should use this, too.
+            throw new NotImplementedException("Fix yer shit.  Everything else is mostly working, except the checkbox that sometimes won't activate.");
+            LabelStatus.Text = "Panel Move Started";
+        }
+
+        private void Panel_MoveEnded(object sender, EventArgs e)
+        {
+            LabelStatus.Text = "Panel Move Ended";
+        }
+
+        private void Panel_Moved(object sender, EventArgs e)
+        {
+            LabelStatus.Text = "Panel Moving";
+        }
 
         private void Ck1_Unchecked(object sender, EventArgs e)
         {

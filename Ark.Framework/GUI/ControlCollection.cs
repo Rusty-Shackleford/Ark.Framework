@@ -48,6 +48,31 @@ namespace Ark.Framework.GUI
         {
             ((IList<Control>)_controls).RemoveAt(index);
         }
+
+        public Control GetControl(Control match)
+        {
+            if (_controls.Count == 0)
+                return null;
+
+            if (_controls.Contains(match))
+            {
+                for (int i = 0; i < _controls.Count; i++)
+                {
+                    if (_controls[i] == match)
+                    {
+                        return match;
+                    }
+                }
+            }
+            return null;
+        }
+
+
+        public Control FindControlByName(string name)
+        {
+            var f = _controls.Find(n => n.Name == name);
+            return f ?? null;
+        }
         #endregion
 
 
