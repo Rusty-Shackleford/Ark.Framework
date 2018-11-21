@@ -234,29 +234,29 @@ namespace Ark.Framework.GUI.Controls
         public ControlStyle PressedStyle { get; set; }
         public ControlStyle HoveredPressedStyle { get; set; }
 
+
         // Current Style uses a decorator pattern for controls that want
         // to use a derived style. See:
         // https://stackoverflow.com/questions/5709034/does-c-sharp-support-return-type-covariance
-        protected ControlStyle _currentStyle;
-        protected abstract ControlStyle CurrentStyle();
 
-        /// <summary>
-        /// Retrieves the style currently used by this control.
-        /// </summary>
-        /// <returns></returns>
-        public ControlStyle GetCurrentStyle()
+        public event EventHandler StyleChanged;
+        private ControlStyle _currentStyle;
+        public ControlStyle CurrentStyle
         {
-            return CurrentStyle();
+            get { return _currentStyle;}
+            protected set
+            {
+                if (value == null)
+                    throw new NotSupportedException("Control's CurrentStyle can never be null.");
+                if (value != _currentStyle)
+                {
+                    _currentStyle = value;
+                    StyleChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
         }
 
-        /// <summary>
-        /// Set the current style of this control.
-        /// </summary>
-        /// <param name="style"></param>
-        public void SetCurrentStyle(ControlStyle style)
-        {
-            _currentStyle = style;
-        }
+        public abstract void UpdateStyle();
         #endregion
 
 
@@ -278,8 +278,8 @@ namespace Ark.Framework.GUI.Controls
 
         //public abstract ControlState GetState();
         #endregion
-
-
+        
+        
         #region [ Mouse Down/Up ]
         public virtual void OnMouseDown(MouseEventArgs e)
         {
