@@ -8,7 +8,7 @@ namespace Ark.Framework.GUI.Controls
 {
     public abstract class Control : IAnchorable, IRefresh
     {
-        #region [ Constructor / Initialize ]
+        #region [ Constructor / Refresh ]
         /// <summary>
         /// Create a new control.  Call Refresh() to notify the control that its construction is completed.
         /// </summary>
@@ -22,6 +22,7 @@ namespace Ark.Framework.GUI.Controls
             _currentStyle = DefaultStyle;
             HoveredStyle = DefaultStyle;
             PressedStyle = DefaultStyle;
+            HoveredPressedStyle = DefaultStyle;
 
             LabelAlignment = style.LabelAlignment;
             LabelOffset = style.LabelOffset;
@@ -51,7 +52,7 @@ namespace Ark.Framework.GUI.Controls
 
         public virtual Rectangle GetAnchorBounds()
         {
-            return GetCurrentStyle().AnchoringOffset.Apply(Position, GetCurrentStyle().Size);
+            return CurrentStyle.AnchoringOffset.Apply(Position, CurrentStyle.Size);
         }
 
         public void AnchorTo(IAnchorable target, AnchorAlignment alignment, PositionOffset offset)
@@ -115,7 +116,7 @@ namespace Ark.Framework.GUI.Controls
         /// </summary>
         public virtual int Width
         {
-            get { return GetCurrentStyle().Size.Width; }
+            get { return CurrentStyle.Size.Width; }
         }
 
         /// <summary>
@@ -123,7 +124,7 @@ namespace Ark.Framework.GUI.Controls
         /// </summary>
         public virtual int Height
         {
-            get { return GetCurrentStyle().Size.Height; }
+            get { return CurrentStyle.Size.Height; }
         }
 
         /// <summary>
@@ -149,7 +150,7 @@ namespace Ark.Framework.GUI.Controls
         {
             get
             {
-                return GetCurrentStyle().HoverOffset.Apply(Position, GetCurrentStyle().Size);
+                return CurrentStyle.HoverOffset.Apply(Position, CurrentStyle.Size);
             }
         }
 
@@ -160,7 +161,7 @@ namespace Ark.Framework.GUI.Controls
         {
             get
             {
-                return GetCurrentStyle().DraggableOffset.Apply(Position, GetCurrentStyle().Size);
+                return CurrentStyle.DraggableOffset.Apply(Position, CurrentStyle.Size);
             }
         }
 
@@ -171,7 +172,7 @@ namespace Ark.Framework.GUI.Controls
         {
             get
             {
-                return GetCurrentStyle().InteractiveOffset.Apply(Position, GetCurrentStyle().Size);
+                return CurrentStyle.InteractiveOffset.Apply(Position, CurrentStyle.Size);
             }
         }
         #endregion
@@ -224,22 +225,37 @@ namespace Ark.Framework.GUI.Controls
         }
 
 
-        
+
         #endregion
 
 
         #region [ Style ]
+        // Note: Decorator Pattern
+        // https://stackoverflow.com/questions/5709034/does-c-sharp-support-return-type-covariance
+
+        public event EventHandler StyleChanged;
+
         public ControlStyle DefaultStyle { get; set; }
         public ControlStyle HoveredStyle { get; set; }
         public ControlStyle PressedStyle { get; set; }
         public ControlStyle HoveredPressedStyle { get; set; }
 
+        public virtual void UpdateStyle()
+        {
+            // DefaultStyle
+            if (!Hovered && !Pressed)
+                CurrentStyle = DefaultStyle;
+            // HoveredStyle
+            if (Hovered && !Pressed)
+                CurrentStyle = HoveredStyle;
+            // PressedStyle
+            if (!Hovered && Pressed)
+                CurrentStyle = PressedStyle;
+            // HoveredPressedStyle
+            if (Hovered && Pressed)
+                CurrentStyle = HoveredPressedStyle;
+        }
 
-        // Current Style uses a decorator pattern for controls that want
-        // to use a derived style. See:
-        // https://stackoverflow.com/questions/5709034/does-c-sharp-support-return-type-covariance
-
-        public event EventHandler StyleChanged;
         private ControlStyle _currentStyle;
         public ControlStyle CurrentStyle
         {
@@ -255,8 +271,6 @@ namespace Ark.Framework.GUI.Controls
                 }
             }
         }
-
-        public abstract void UpdateStyle();
         #endregion
 
 
@@ -288,8 +302,7 @@ namespace Ark.Framework.GUI.Controls
                 if (InteractiveBounds.Contains(e.Position))
                 {
                     Pressed = true;
-                    if (PressedStyle != null)
-                        SetCurrentStyle(PressedStyle);
+                    UpdateStyle();
                     MouseDown?.Invoke(this, EventArgs.Empty);
                 }
             }
@@ -302,7 +315,7 @@ namespace Ark.Framework.GUI.Controls
                 if (InteractiveBounds.Contains(e.Position))
                 {
                     Pressed = false;
-                    SetCurrentStyle(DefaultStyle);
+                    UpdateStyle();
                     Clicked?.Invoke(this, EventArgs.Empty);
                 }
             }
@@ -319,7 +332,7 @@ namespace Ark.Framework.GUI.Controls
                 {
                     Hovered = true;
                     if (HoveredStyle != null)
-                        SetCurrentStyle(HoveredStyle);
+                        UpdateStyle();
                     MouseEntered?.Invoke(this, EventArgs.Empty);
                 }
             }
@@ -331,7 +344,7 @@ namespace Ark.Framework.GUI.Controls
                 if (!HoverBounds.Contains(e.Position))
                 {
                     Hovered = false;
-                    SetCurrentStyle(DefaultStyle);
+                    UpdateStyle();
                     MouseLeft?.Invoke(this, EventArgs.Empty);
                 }
             }

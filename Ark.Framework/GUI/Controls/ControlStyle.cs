@@ -12,6 +12,7 @@ namespace Ark.Framework.GUI.Controls
     public class ControlStyle
     {
         #region [ Members ]
+        public string Name { get; set; }
         public BitmapFont Font { get; set; }
         public Color FontColor { get; set; }
         public Texture2D Texture { get; set; }
@@ -50,6 +51,15 @@ namespace Ark.Framework.GUI.Controls
                 DraggableOffset == other.DraggableOffset &&
                 HoverOffset == other.HoverOffset &&
                 AnchoringOffset == other.AnchoringOffset;
+        }
+        #endregion
+
+
+        #region [ ToString ]
+        public override string ToString()
+        {
+            string myType = GetType().Name;
+            return $"{myType} | {Name} | Texture: {Texture.Name}";
         }
         #endregion
     }

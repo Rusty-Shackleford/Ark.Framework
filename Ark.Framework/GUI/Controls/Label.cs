@@ -30,10 +30,6 @@ namespace Ark.Framework.GUI.Controls
         
         public override int Width => (int)DefaultStyle.Font.MeasureString(_value).Width;
         public override int Height => (int)DefaultStyle.Font.MeasureString(_value).Height;
-        protected override ControlStyle CurrentStyle()
-        {
-            return _currentStyle;
-        }
         #endregion
 
 
@@ -60,7 +56,7 @@ namespace Ark.Framework.GUI.Controls
 
             if (Visible && !string.IsNullOrEmpty(Value))
             {
-                spriteBatch.DrawString(GetCurrentStyle().Font, Value, Position, GetCurrentStyle().FontColor);
+                spriteBatch.DrawString(CurrentStyle.Font, Value, Position, CurrentStyle.FontColor);
             }
         }
 

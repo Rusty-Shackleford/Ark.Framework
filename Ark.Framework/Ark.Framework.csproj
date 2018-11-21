@@ -62,7 +62,6 @@
     <Compile Include="GUI\Controls\Button.cs" />
     <Compile Include="GUI\Controls\Checkbox.cs" />
     <Compile Include="GUI\Controls\Control.cs" />
-    <Compile Include="GUI\Controls\ControlState.cs" />
     <Compile Include="GUI\Controls\Panel.cs" />
     <Compile Include="GUI\Controls\PanelControlStyle.cs" />
     <Compile Include="Graphics\TextureMaker.cs" />

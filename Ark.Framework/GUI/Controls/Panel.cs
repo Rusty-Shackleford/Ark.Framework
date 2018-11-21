@@ -27,17 +27,16 @@ namespace Ark.Framework.GUI.Controls
         protected ControlCollection Children { get; set; }
         internal CollectionInputHandler _childrenInputHandler { get; set; }
         private readonly InputHandler _myInputHandler;
-        protected override ControlStyle CurrentStyle()
-        {
-            return GetCurrentStyle();
-        }
-        public new PanelControlStyle GetCurrentStyle()
-        {
-            return (PanelControlStyle)_currentStyle;
-        }
         public Viewport Viewport { get; private set; }
         #endregion
 
+
+        #region [ GetStyle ]
+        protected PanelControlStyle CurrentPanelStyle()
+        {
+            return (PanelControlStyle)CurrentStyle;
+        }
+        #endregion
 
         #region [ Constructor ]
         public Panel(PanelControlStyle style) : base(style)
@@ -45,7 +44,7 @@ namespace Ark.Framework.GUI.Controls
             MovementEnabled = true;
             Children = new ControlCollection();
 
-            Rectangle view = GetCurrentStyle().ViewportOffset.Apply(Position, GetCurrentStyle().Size);
+            Rectangle view = CurrentPanelStyle().ViewportOffset.Apply(Position, CurrentStyle.Size);
 
             Viewport = new Viewport(view);
             Viewport.AnchorTo(this, AnchorAlignment.Inside_Top_Left, new PositionOffset(4, 24));
@@ -143,7 +142,7 @@ namespace Ark.Framework.GUI.Controls
         #region [ Movement ]
         public Rectangle DragBounds
         {
-            get { return GetCurrentStyle().DraggableOffset.Apply(Position, GetCurrentStyle().Size); }
+            get { return CurrentStyle.DraggableOffset.Apply(Position, CurrentStyle.Size); }
         }
 
         public bool Moving { get; protected set; }
@@ -200,7 +199,7 @@ namespace Ark.Framework.GUI.Controls
         {
             if (Visible)
             {
-                spriteBatch.Draw(GetCurrentStyle().Texture, Position, Color.White);
+                spriteBatch.Draw(CurrentStyle.Texture, Position, Color.White);
                 Label?.Draw(spriteBatch);
                 for (int i = 0; i < Children.Count; i++)
                 {

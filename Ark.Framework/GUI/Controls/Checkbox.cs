@@ -12,29 +12,38 @@ namespace Ark.Framework.GUI.Controls
     public class Checkbox : Control
     {
         #region [ Members ]
-        protected override ControlStyle CurrentStyle()
-        {
-            return _currentStyle;
-            //if (Hovered && IsChecked)
-            //    return CheckedHoveredStyle;
-            //if (IsChecked)
-            //    return CheckedStyle;
-            //if (Hovered)
-            //    return HoveredStyle;
-            //return DefaultStyle;
-        }
         public ControlStyle CheckedStyle { get; set; }
-        public ControlStyle CheckedHoveredStyle { get; set; }
+        public ControlStyle HoveredChecked { get; set; }
+        public ControlStyle HoveredCheckedPressedStyle { get; set; }
         #endregion
 
 
         #region [ Constructor ]
-        public Checkbox(ControlStyle style, ControlStyle ckStyle, ControlStyle ckHovStyle) : base(style)
+        public Checkbox(ControlStyle style, ControlStyle chk, ControlStyle chkHov, ControlStyle chkHovPress) : base(style)
         {
-            CheckedStyle = ckStyle;
-            CheckedHoveredStyle = ckHovStyle;
+            CheckedStyle = chk;
+            HoveredChecked = chkHov;
+            HoveredCheckedPressedStyle = chkHovPress;
         }
         #endregion
+
+
+        public override void UpdateStyle()
+        {
+            // Handle default styles:
+            base.UpdateStyle();
+
+            // Apply custom styles if needed:
+            // Checked
+            if (IsChecked && !Hovered && !Pressed)
+                CurrentStyle = CheckedStyle;
+            // HoveredChecked
+            if (IsChecked && Hovered && !Pressed)
+                CurrentStyle = HoveredChecked;
+            // HoveredCheckedPressed
+            if (IsChecked && Hovered && Pressed)
+                CurrentStyle = HoveredCheckedPressedStyle;
+        }
 
 
         #region [ Check Events ]
@@ -43,14 +52,9 @@ namespace Ark.Framework.GUI.Controls
         public event EventHandler Checked;
         public event EventHandler Unchecked;
 
+
         public override void OnMouseUp(MouseEventArgs e)
         {
-            // if mouse is within interactive bounds and pressed and enabled
-            // if we WERE checked
-            // TODO: Left off Here!  The Styles and events aren't right for checkbox.
-            // Part of the problem is CurrentStyle() function... disagreements between that and
-            // the OnEvent methods as well as the ones offered by base class... those 
-            // may need to be overwritten.
             if (Enabled && Pressed)
             {
                 if (InteractiveBounds.Contains(e.Position))
@@ -59,7 +63,7 @@ namespace Ark.Framework.GUI.Controls
                     if (IsChecked)
                     {
                         IsChecked = false;
-                        SetCurrentStyle(HoveredStyle);
+                        UpdateStyle();
                         Unchecked?.Invoke(this, EventArgs.Empty);
                         return;
                     }
@@ -67,7 +71,7 @@ namespace Ark.Framework.GUI.Controls
                     if (!IsChecked)
                     {
                         IsChecked = true;
-                        SetCurrentStyle(CheckedHoveredStyle);
+                        UpdateStyle();
                         Checked?.Invoke(this, EventArgs.Empty);
                         return;
                     }
@@ -82,7 +86,7 @@ namespace Ark.Framework.GUI.Controls
         {
             if (Visible)
             {
-                spriteBatch.Draw(GetCurrentStyle().Texture, Position, Color.White);
+                spriteBatch.Draw(CurrentStyle.Texture, Position, Color.White);
                 Label?.Draw(spriteBatch);
             }
         }

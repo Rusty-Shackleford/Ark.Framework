@@ -23,20 +23,12 @@ namespace Ark.Framework.GUI.Controls
         #endregion
 
 
-        #region [ Members ]
-        protected override ControlStyle CurrentStyle()
-        {
-            return _currentStyle;
-        }
-        #endregion
-
-
         #region [ Draw ]
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (Visible)
             {
-                spriteBatch.Draw(GetCurrentStyle().Texture, Position, Color.White);
+                spriteBatch.Draw(CurrentStyle.Texture, Position, Color.White);
                 Label.Draw(spriteBatch);
             }
         }
