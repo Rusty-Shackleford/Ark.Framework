@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using Ark.Framework.GUI.Anchoring;
 using System;
 using System.Diagnostics;
+using Ark.Framework.Graphics;
 
 namespace Ark.Framework.Demo
 {
@@ -30,7 +31,9 @@ namespace Ark.Framework.Demo
 
         Label LabelStatus;
         Label LabelMoveStatus;
-        
+
+        TextureMaker TextureMaker;
+        Sprite ViewportBorder;
         #endregion
 
 
@@ -57,6 +60,8 @@ namespace Ark.Framework.Demo
             Window.AllowUserResizing = true;
             Window.ClientSizeChanged += Window_ClientSizeChanged;
             Window.Title = "Ark Demo";
+
+            TextureMaker = new TextureMaker(_graphics.GraphicsDevice);
 
             base.Initialize();
         }
@@ -85,6 +90,7 @@ namespace Ark.Framework.Demo
             TestPanel.MoveEnded += Panel_MoveEnded;
             TestPanel.Moved += Panel_Moved;
 
+            ViewportBorder = new Sprite(TextureMaker.MakeBorder(Color.Red, 255, TestPanel.Viewport.Bounds));
 
             // Status Label:
             LabelStatus = new Label(GameAssets.BtnStyle, "Status Message");            
@@ -181,6 +187,7 @@ namespace Ark.Framework.Demo
             // UPDATE HERE:
             TestPanel.Update(gameTime);
 
+            ViewportBorder.Position = TestPanel.Viewport.Position;
             base.Update(gameTime);
         }
         #endregion
@@ -194,6 +201,7 @@ namespace Ark.Framework.Demo
             // DRAW HERE:
             TestPanel.Draw(_spriteBatch);
 
+            ViewportBorder.Draw(_spriteBatch);
             // END DRAW:
             // Mouse Cursor:  Last to draw to be on top
             _spriteBatch.Draw(GameAssets.MouseCursor,

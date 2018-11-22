@@ -37,11 +37,6 @@ namespace Ark.Framework.GUI.Controls
         internal CollectionInputHandler _childrenInputHandler { get; set; }
         private readonly InputHandler _myInputHandler;
         public Viewport Viewport { get; private set; }
-
-        public Rectangle ContentBounds
-        {
-            get { return PanelStyle().ViewportOffset.Apply(Position, CurrentStyle.Size); }
-        }
         #endregion
 
 
@@ -61,11 +56,11 @@ namespace Ark.Framework.GUI.Controls
             Children = new ControlCollection();
 
 
-            Viewport = new Viewport(ContentBounds);
+            Viewport = new Viewport(style.Size);
             Viewport.AnchorTo(
-                this, 
-                AnchorAlignment.Inside_Top_Left, 
-                PanelStyle().ViewportOffset.PositionOffset
+                this,
+                AnchorAlignment.Inside_Top_Left,
+                PositionOffset.Zero
                 );
 
             _childrenInputHandler = new CollectionInputHandler(Children, Viewport);

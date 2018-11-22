@@ -31,6 +31,7 @@ namespace Ark.Framework
             }
         }
 
+        // TODO: Size should update anchors
         public Size Size { get; set; }
         public Rectangle Bounds
         {
@@ -86,11 +87,11 @@ namespace Ark.Framework
 
 
         #region [ Constructor ]
-        public Viewport(Rectangle bounds)
+        public Viewport(Size size)
         {
-            Position = new Vector2(bounds.X, bounds.Y);
-            Size = new Size(bounds.Width, bounds.Height);
+            Size = size;
         }
+
 
         public Viewport(int x, int y, int width, int height)
         {

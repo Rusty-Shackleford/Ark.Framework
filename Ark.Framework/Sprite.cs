@@ -17,6 +17,7 @@ namespace Ark.Framework
         {
             Texture = texture;
             Position = position;
+            Color = Color.White;
         }
 
         public Sprite(Texture2D texture) : this(texture, Vector2.Zero) { }
