@@ -37,12 +37,17 @@ namespace Ark.Framework.GUI.Controls
         internal CollectionInputHandler _childrenInputHandler { get; set; }
         private readonly InputHandler _myInputHandler;
         public Viewport Viewport { get; private set; }
+
+        public Rectangle ContentBounds
+        {
+            get { return PanelStyle().ViewportOffset.Apply(Position, CurrentStyle.Size); }
+        }
         #endregion
 
 
         #region [ GetStyle ]
         // TODO: Investigate - hackjob?
-        protected PanelControlStyle CurrentPanelStyle()
+        protected PanelControlStyle PanelStyle()
         {
             return (PanelControlStyle)CurrentStyle;
         }
@@ -56,8 +61,13 @@ namespace Ark.Framework.GUI.Controls
             Children = new ControlCollection();
 
 
-            Viewport = new Viewport(CurrentPanelStyle().ViewportSize);
-            Viewport.AnchorTo(this, AnchorAlignment.Inside_Top_Left, new PositionOffset(4, 24));
+            Viewport = new Viewport(ContentBounds);
+            Viewport.AnchorTo(
+                this, 
+                AnchorAlignment.Inside_Top_Left, 
+                PanelStyle().ViewportOffset.PositionOffset
+                );
+
             _childrenInputHandler = new CollectionInputHandler(Children, Viewport);
             _myInputHandler = new InputHandler(this);
         }

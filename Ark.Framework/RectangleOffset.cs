@@ -25,6 +25,14 @@ namespace Ark.Framework
         /// Distance from a Rectangle.Bottom
         /// </summary>
         public int Bottom_Offset { get; set; }
+
+        /// <summary>
+        /// Left_Offset, Top_Offset = Position Offset
+        /// </summary>
+        public PositionOffset PositionOffset
+        {
+            get { return new PositionOffset(Left_Offset, Top_Offset); }
+        }
         #endregion
 
 
@@ -46,29 +54,27 @@ namespace Ark.Framework
             return new Rectangle(
                 rect.X + Left_Offset,
                 rect.Y + Top_Offset,
-                rect.Width + (Left_Offset + Right_Offset),
-                rect.Height + (Top_Offset + Bottom_Offset)
+                rect.Width - (Left_Offset + Right_Offset),
+                rect.Height - (Top_Offset + Bottom_Offset)
+                //rect.Width + (Left_Offset + Right_Offset),
+                //rect.Height + (Top_Offset + Bottom_Offset)
                 );
         }
 
-        public Rectangle Apply(Vector2 position, Rectangle rect)
-        {
-            return new Rectangle(
-                (int)position.X + Left_Offset,
-                (int)position.Y + Top_Offset,
-                rect.Width + (Left_Offset + Right_Offset),
-                rect.Height + (Top_Offset + Bottom_Offset)
-                );
-        }
+        //public Rectangle Apply(Vector2 position, Rectangle rect)
+        //{
+        //    return new Rectangle(
+        //        (int)position.X + Left_Offset,
+        //        (int)position.Y + Top_Offset,
+        //        rect.Width + (Left_Offset + Right_Offset),
+        //        rect.Height + (Top_Offset + Bottom_Offset)
+        //        );
+        //}
 
         public Rectangle Apply(Vector2 position, Size size)
         {
-            return new Rectangle(
-                (int)position.X + Left_Offset,
-                (int)position.Y + Top_Offset,
-                size.Width + (Left_Offset + Right_Offset),
-                size.Height + (Top_Offset + Bottom_Offset)
-                );
+            Rectangle r = new Rectangle((int)position.X, (int)position.Y, size.Width, size.Height);
+            return Apply(r);
         }
         #endregion
 

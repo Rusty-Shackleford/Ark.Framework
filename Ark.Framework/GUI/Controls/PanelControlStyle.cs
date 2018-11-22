@@ -11,14 +11,14 @@ namespace Ark.Framework.GUI.Controls
     public class PanelControlStyle : ControlStyle
     {
         #region [ Members ]
-        public Size ViewportSize { get; set; }
+        public RectangleOffset ViewportOffset { get; set; }
         #endregion
 
 
         #region [ Constructor ]
-        public PanelControlStyle(Texture2D texture, Size viewportSize) : base(texture)
+        public PanelControlStyle(Texture2D texture, RectangleOffset viewportOffset) : base(texture)
         {
-            ViewportSize = viewportSize;
+            ViewportOffset = viewportOffset;
             LabelOffset = PositionOffset.Zero;
             LabelAlignment = AnchorAlignment.Inside_Top_Center;
         }
