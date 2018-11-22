@@ -9,11 +9,20 @@ namespace Ark.Framework.GUI.Controls
 {
     public enum AnchorPreference
     {
+        /// <summary>Anchor to Panel directly.</summary>
         Panel,
-        TopControl,
-        BottomControl,
-        RightControl,
-        LeftControl
+        /// <summary>Anchor to highest positioned control - highest Y axis value.</summary>
+        Top,
+        /// <summary>Anchor to lowest positioned control - lowest Y axis value.</summary>
+        Bottom,
+        /// <summary>Anchor to Control positioned furthest right - highest X axis value.</summary>
+        Right,
+        /// <summary>Anchor to Control positioned furthest left - lowest X axis value.</summary>
+        Left,
+        /// <summary>Anchor to the first child of Panel's control collection.</summary>
+        First,
+        /// <summary>Anchor to the last child of Panel's control collection.</summary>
+        Last,
     }
     /// <summary>
     /// A panel is a special control that acts as a container for other controls.
@@ -32,6 +41,7 @@ namespace Ark.Framework.GUI.Controls
 
 
         #region [ GetStyle ]
+        // TODO: Investigate - hackjob?
         protected PanelControlStyle CurrentPanelStyle()
         {
             return (PanelControlStyle)CurrentStyle;
@@ -45,9 +55,8 @@ namespace Ark.Framework.GUI.Controls
             MovementEnabled = true;
             Children = new ControlCollection();
 
-            Rectangle view = CurrentPanelStyle().ViewportOffset.Apply(Position, CurrentStyle.Size);
 
-            Viewport = new Viewport(view);
+            Viewport = new Viewport(CurrentPanelStyle().ViewportSize);
             Viewport.AnchorTo(this, AnchorAlignment.Inside_Top_Left, new PositionOffset(4, 24));
             _childrenInputHandler = new CollectionInputHandler(Children, Viewport);
             _myInputHandler = new InputHandler(this);
@@ -56,14 +65,12 @@ namespace Ark.Framework.GUI.Controls
 
 
         #region [ Children Management ]
-        /// <summary>
-        /// Adds a control to this panel without specific positioning
-        /// instructions - you will need to place the control yourself.
-        /// </summary>
-        /// <param name="control">The control to add.</param>
-        public Control Add(Control control)
+        protected Control Add(Control control)
         {
-            Children.Add(control);
+            if (!Children.Contains(control))
+                Children.Add(control);
+            else
+                throw new NotSupportedException($"This panel already contains this control. {control.ToString()}");
             return control;
         }
 
@@ -82,21 +89,27 @@ namespace Ark.Framework.GUI.Controls
                 case AnchorPreference.Panel:
                     control.AnchorTo(this, alignment, offset);
                     break;
-                case AnchorPreference.TopControl:
+                case AnchorPreference.Top:
                     var t = Children.FindTopControl();
                     if (t != null) control.AnchorTo(t, alignment, offset);
                     break;
-                case AnchorPreference.BottomControl:
+                case AnchorPreference.Bottom:
                     var b = Children.FindBottomControl();
                     if (b != null) control.AnchorTo(b, alignment, offset);
                     break;
-                case AnchorPreference.RightControl:
+                case AnchorPreference.Right:
                     var r = Children.FindBottomControl();
                     if (r != null) control.AnchorTo(r, alignment, offset);
                     break;
-                case AnchorPreference.LeftControl:
+                case AnchorPreference.Left:
                     var l = Children.FindBottomControl();
                     if (l != null) control.AnchorTo(l, alignment, offset);
+                    break;
+                case AnchorPreference.First:
+                    control.AnchorTo(Children[0], alignment, offset);
+                    break;
+                case AnchorPreference.Last:
+                    control.AnchorTo(Children[Children.Count -1 ], alignment, offset);
                     break;
                 default:
                     break;
@@ -104,8 +117,16 @@ namespace Ark.Framework.GUI.Controls
             // Fallback: If no control found, anchor to this panel.
             if (control.Anchored == false)
             {
+                // TODO: Log Message
                 control.AnchorTo(this, AnchorAlignment.Inside_Top_Left, offset);
             }
+            return Add(control);
+        }
+
+
+        public Control Add(Control control, IAnchorable anchor, AnchorAlignment align, PositionOffset offset)
+        {
+            control.AnchorTo(anchor, align, offset);
             return Add(control);
         }
 
@@ -115,18 +136,20 @@ namespace Ark.Framework.GUI.Controls
         /// <param name="control">Control to add.</param>
         /// <param name="anchor">Control to anchor to, must be a child.</param>
         /// <param name="offset">Offset from anchor.</param>
-        public Control Add(Control control, AnchorSettings anchorSettings)
-        {
-            // Subtle note: By having the anchor already in this panel, we know
-            // that it has already been properly placed and refreshed.
-            if (Children.Contains(control))
-            {
-                control.AnchorTo(anchorSettings.Anchor, anchorSettings.Alignment, anchorSettings.Offset);
-                return Add(control);
-            }
-            throw new ArgumentException($"Could not find anchor {anchorSettings.Anchor.Name} in this panel. " +
-                $"Has it been added?");
-        }
+        //public Control Add(Control control, AnchorSettings anchorSettings)
+        //{
+        //    // Subtle note: By having the anchor already in this panel, we know
+        //    // that it has already been properly placed and refreshed.
+        //    if (Children.Contains(control))
+        //    {
+        //        control.AnchorTo(anchorSettings.Anchor, anchorSettings.Alignment, anchorSettings.Offset);
+        //        return Add(control);
+        //    }
+        //    throw new ArgumentException($"Could not find anchor {anchorSettings.Anchor.Name} in this panel. " +
+        //        $"Has it been added?");
+        //}
+
+
 
         /// <summary>
         /// Remove an existing control from this panel.

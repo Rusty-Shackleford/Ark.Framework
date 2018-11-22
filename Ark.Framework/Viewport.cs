@@ -86,10 +86,12 @@ namespace Ark.Framework
 
 
         #region [ Constructor ]
-        public Viewport(Rectangle bounds)
+        public Viewport(Size size) : this(size, Vector2.Zero) { }
+
+        public Viewport(Size size, Vector2 position)
         {
-            Position = new Vector2(bounds.X, bounds.Y);
-            Size = new Size(bounds.Width, bounds.Height);
+            Position = position;
+            Size = size;
         }
 
         public Viewport(int x, int y, int width, int height)

@@ -11,25 +11,25 @@ namespace Ark.Framework.GUI.Controls
         #region [ Members ]
         // As there is a "Text" field within all controls that controls a Label,
         // the actual value of a label needs to be stored in it's own variable.
-        private string _value;
-        public string Value
+        private string _text;
+        public new string Text
         {
-            get { return _value; }
+            get { return _text; }
             //TODO: Positioning with Anchor is off - need to check timing.
             set
             {
-                if (value != _value)
+                if (value != _text)
                 {
                     Size oldSize = new Size(Width, Height);
-                    _value = value;
+                    _text = value;
                     Refresh();
                     OnResized(new AnchorResizedArgs(oldSize, new Size(Width, Height)));
                 }
             }
         }
         
-        public override int Width => (int)DefaultStyle.Font.MeasureString(_value).Width;
-        public override int Height => (int)DefaultStyle.Font.MeasureString(_value).Height;
+        public override int Width => (int)DefaultStyle.Font.MeasureString(_text).Width;
+        public override int Height => (int)DefaultStyle.Font.MeasureString(_text).Height;
         #endregion
 
 
@@ -37,7 +37,7 @@ namespace Ark.Framework.GUI.Controls
         public Label(ControlStyle style) : base(style) { }
         public Label(ControlStyle style, string text) : base(style)
         {
-            _value = text;
+            _text = text;
         }
         #endregion
 
@@ -54,9 +54,9 @@ namespace Ark.Framework.GUI.Controls
         public override void Draw(SpriteBatch spriteBatch)
         {
 
-            if (Visible && !string.IsNullOrEmpty(Value))
+            if (Visible && !string.IsNullOrEmpty(Text))
             {
-                spriteBatch.DrawString(CurrentStyle.Font, Value, Position, CurrentStyle.FontColor);
+                spriteBatch.DrawString(CurrentStyle.Font, Text, Position, CurrentStyle.FontColor);
             }
         }
 

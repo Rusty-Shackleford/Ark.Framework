@@ -29,6 +29,8 @@ namespace Ark.Framework.Demo
         int buttonClickedCount;
 
         Label LabelStatus;
+        Label LabelMoveStatus;
+        
         #endregion
 
 
@@ -85,10 +87,15 @@ namespace Ark.Framework.Demo
 
 
             // Status Label:
-            LabelStatus = new Label(GameAssets.BtnStyle, "Status Message");
+            LabelStatus = new Label(GameAssets.BtnStyle, "Status Message");            
             TestPanel.Add(LabelStatus, AnchorPreference.Panel, new PositionOffset(0, 35), AnchorAlignment.Inside_Top_Right);
 
-            // Create some controls to add to panel:
+            
+            LabelMoveStatus = new Label(GameAssets.BtnStyle, "---");
+            var xOffset = LabelMoveStatus.CurrentStyle.Font.MeasureString("Panel Move Started");
+            TestPanel.Add(LabelMoveStatus, AnchorPreference.Last, new PositionOffset(0, 10), AnchorAlignment.Below_Left);
+
+
             Button btn = GameAssets.ConstructButton("Btn1", "Click Me");
 
             btn.Clicked += Btn1_Clicked;
@@ -99,19 +106,21 @@ namespace Ark.Framework.Demo
             box.Checked += Ck1_Checked;
             box.Unchecked += Ck1_Unchecked;
 
-            TestPanel.Add(box, AnchorPreference.BottomControl, new PositionOffset(0, 20), AnchorAlignment.Below_Left);
+            TestPanel.Add(box, AnchorPreference.Last, new PositionOffset(0, 20), AnchorAlignment.Below_Left);
         }
+        #endregion
 
+
+        #region [ Event Handlers ]
         private void Panel_MoveStarted(object sender, EventArgs e)
         {
-            //TODO: FIX THIS - Text is for all the Controls that have a Text value. Label should use this, too.
-            throw new NotImplementedException("Fix yer shit.  Everything else is mostly working, except the checkbox that sometimes won't activate.");
-            LabelStatus.Text = "Panel Move Started";
+            LabelMoveStatus.Text = "Panel Move Started";
         }
 
         private void Panel_MoveEnded(object sender, EventArgs e)
         {
-            LabelStatus.Text = "Panel Move Ended";
+            LabelMoveStatus.Text = "Panel Move Ended";
+            LabelStatus.Text = "Stopped.";
         }
 
         private void Panel_Moved(object sender, EventArgs e)

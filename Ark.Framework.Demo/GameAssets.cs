@@ -81,6 +81,7 @@ namespace Ark.Framework.Demo
 
             #region [ Load Panel Styles ]
             var panelTexture = content.Load<Texture2D>(@"UI/Panel");
+            // still need to compare with the texture somehow... hmmm.
             PanelStyle = new PanelControlStyle(panelTexture, new RectangleOffset(-4, -24, -4, 0))
             {
                 AnchoringOffset = new RectangleOffset(-4, 0, -4, -9),
