@@ -1,4 +1,5 @@
-﻿using Ark.Framework.GUI.Anchoring;
+﻿using Ark.Framework.Gui;
+using Ark.Framework.GUI.Anchoring;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Input.InputListeners;
@@ -7,6 +8,7 @@ using System;
 
 namespace Ark.Framework.GUI.Controls
 {
+    #region [ AnchorPreference ]
     public enum AnchorPreference
     {
         /// <summary>Anchor to Panel directly.</summary>
@@ -24,19 +26,21 @@ namespace Ark.Framework.GUI.Controls
         /// <summary>Anchor to the last child of Panel's control collection.</summary>
         Last,
     }
+    #endregion
+
+
     /// <summary>
-    /// A panel is a special control that acts as a container for other controls.
-    /// Visually, this is typically represented as an in-game window that contains 
-    /// buttons, text, dropdowns and so on.  A panel is a self-sufficient container 
-    /// that handles its own input handling and updating / drawing its children.
+    /// A panel is a self-updating and self-drawing Control that acts as a "window" 
+    /// and container and manager for its controls.
     /// </summary>
     public class Panel : Control, IMoveable, IUpdate
     {
         #region [ Members ]
-        protected ControlCollection Children { get; set; }
-        internal CollectionInputHandler _childrenInputHandler { get; set; }
-        private readonly InputHandler _myInputHandler;
+        public ControlCollection Children { get; protected set; }
         public Viewport Viewport { get; private set; }
+
+        internal PanelInputHandler _childrenInput { get; set; }
+        private readonly ControlInputHandler _myInput;
         #endregion
 
 
@@ -56,15 +60,15 @@ namespace Ark.Framework.GUI.Controls
             Children = new ControlCollection();
 
 
-            Viewport = new Viewport(style.Size);
+            Viewport = new Viewport(style.ViewportSize);
             Viewport.AnchorTo(
                 this,
                 AnchorAlignment.Inside_Top_Left,
                 PositionOffset.Zero
                 );
 
-            _childrenInputHandler = new CollectionInputHandler(Children, Viewport);
-            _myInputHandler = new InputHandler(this);
+            _childrenInput = new PanelInputHandler(this);
+            _myInput = new ControlInputHandler(this);
         }
         #endregion
 
@@ -224,8 +228,8 @@ namespace Ark.Framework.GUI.Controls
         #region [ Update ]
         public void Update(GameTime gameTime)
         {
-            _myInputHandler.Update(gameTime);
-            _childrenInputHandler.Update(gameTime);
+            _myInput.Update(gameTime);
+            _childrenInput.Update(gameTime);
         }
         #endregion
 

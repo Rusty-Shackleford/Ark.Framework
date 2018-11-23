@@ -32,10 +32,10 @@ namespace Ark.Framework
         }
 
         // TODO: Size should update anchors
-        public Size Size { get; set; }
+        public Size Size { get; private set; }
         public Rectangle Bounds
         {
-            get { return new Rectangle((int)Position.Y, (int)Position.Y, Size.Width, Size.Height); }
+            get { return new Rectangle((int)Position.X, (int)Position.Y, Size.Width, Size.Height); }
         }
         #endregion
 

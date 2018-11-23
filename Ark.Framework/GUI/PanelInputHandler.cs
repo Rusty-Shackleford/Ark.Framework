@@ -5,11 +5,10 @@ using MonoGame.Extended.Input.InputListeners;
 
 namespace Ark.Framework.GUI
 {
-    internal class CollectionInputHandler : IUpdate
+    internal class PanelInputHandler : IUpdate
     {
         #region [ Members ]
-        private ControlCollection _controls;
-        private Viewport _viewport;
+        Panel _owner;
         private MouseListener mouse = new MouseListener(new MouseListenerSettings());
         //private KeyboardListener keyboard = new KeyboardListener(new KeyboardListenerSettings());
 
@@ -20,10 +19,10 @@ namespace Ark.Framework.GUI
 
 
         #region [ Constructor ]
-        public CollectionInputHandler(ControlCollection controls, Viewport viewport)
+        public PanelInputHandler(Panel owner)
         {
-            _controls = controls;
-            _viewport = viewport;
+            _owner = owner;
+
             mouse.MouseMoved += Hover;
             mouse.MouseDown += OnMouseDown;
             mouse.MouseUp += OnMouseUp;
@@ -47,9 +46,9 @@ namespace Ark.Framework.GUI
                 }
             }
 
-            if (_viewport.Bounds.Contains(e.Position))
+            if (_owner.Viewport.Bounds.Contains(e.Position))
             {
-                Control c = _controls.GetItemAtPoint(e.Position);
+                Control c = _owner.Children.GetItemAtPoint(e.Position);
 
                 if (c != null)
                 {
@@ -65,9 +64,9 @@ namespace Ark.Framework.GUI
         #region [ Movement ]
         protected virtual void MoveStart(object sender, MouseEventArgs e)
         {
-            if (_viewport.Bounds.Contains(e.Position))
+            if (_owner.Viewport.Bounds.Contains(e.Position))
             {
-                Control c = _controls.GetItemAtPoint(e.Position);
+                Control c = _owner.Children.GetItemAtPoint(e.Position);
                 if (_movingItem == null && c != null)
                 {
                     if (c is IMoveable)
@@ -110,9 +109,9 @@ namespace Ark.Framework.GUI
         #region [ Mouse Up/Down ]
         protected virtual void OnMouseDown(object sender, MouseEventArgs e)
         {
-            if (_viewport.Bounds.Contains(e.Position))
+            if (_owner.Viewport.Bounds.Contains(e.Position))
             {
-                Control c = _controls.GetItemAtPoint(e.Position);
+                Control c = _owner.Children.GetItemAtPoint(e.Position);
                 if (c != null)
                 {
                     _pressedItem = c;

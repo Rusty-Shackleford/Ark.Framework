@@ -29,8 +29,11 @@ namespace Ark.Framework.Demo
         Panel TestPanel;
         int buttonClickedCount;
 
-        Label LabelStatus;
-        Label LabelMoveStatus;
+        Label LabelStatus { get; set; }
+        Label LabelMoveStatus { get; set; }
+        Label LabelViewportBounds { get; set; }
+        Label LabelMousePosition { get; set; }
+
 
         TextureMaker TextureMaker;
         Sprite ViewportBorder;
@@ -92,16 +95,21 @@ namespace Ark.Framework.Demo
 
             ViewportBorder = new Sprite(TextureMaker.MakeBorder(Color.Red, 255, TestPanel.Viewport.Bounds));
 
-            // Status Label:
+            // LABELS:
             LabelStatus = new Label(GameAssets.BtnStyle, "Status Message");            
-            TestPanel.Add(LabelStatus, AnchorPreference.Panel, new PositionOffset(0, 35), AnchorAlignment.Inside_Top_Right);
+            TestPanel.Add(LabelStatus, AnchorPreference.Panel, new PositionOffset(-100, 35), AnchorAlignment.Inside_Top_Right);
 
-            
             LabelMoveStatus = new Label(GameAssets.BtnStyle, "---");
-            var xOffset = LabelMoveStatus.CurrentStyle.Font.MeasureString("Panel Move Started");
             TestPanel.Add(LabelMoveStatus, AnchorPreference.Last, new PositionOffset(0, 10), AnchorAlignment.Below_Left);
 
+            LabelViewportBounds = new Label(GameAssets.BtnStyle, "");
+            TestPanel.Add(LabelViewportBounds, AnchorPreference.Last, new PositionOffset(0, 6), AnchorAlignment.Below_Left);
 
+            LabelMousePosition = new Label(GameAssets.BtnStyle, "");
+            TestPanel.Add(LabelMousePosition, AnchorPreference.Last, new PositionOffset(0, 6), AnchorAlignment.Below_Left);
+            
+            
+            // BUTTON
             Button btn = GameAssets.ConstructButton("Btn1", "Click Me");
 
             btn.Clicked += Btn1_Clicked;
@@ -186,8 +194,15 @@ namespace Ark.Framework.Demo
             }
             // UPDATE HERE:
             TestPanel.Update(gameTime);
-
             ViewportBorder.Position = TestPanel.Viewport.Position;
+
+            string test = "Viewport: " + TestPanel.Viewport.Bounds.ToString() + "\n";
+            test += "View Pos: " + TestPanel.Viewport.Position.ToString() + "\n";
+            test += "Panel: " + TestPanel.Position.ToString() + "\n";
+            test += "Mouse: " + Mouse.GetState().Position.ToString() + "\n";
+
+            LabelViewportBounds.Text = test;
+
             base.Update(gameTime);
         }
         #endregion

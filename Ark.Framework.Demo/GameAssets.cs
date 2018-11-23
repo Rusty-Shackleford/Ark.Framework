@@ -93,7 +93,7 @@ namespace Ark.Framework.Demo
                 DraggableOffset = new RectangleOffset(4, 0, 4, 475),
                 Font = Plumbis_11,
                 FontColor = Color.White,
-                LabelOffset = new PositionOffset(0, 5)
+                LabelOffset = new PositionOffset(0, -17)
             };
             #endregion
 

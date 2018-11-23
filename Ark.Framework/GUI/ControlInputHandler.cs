@@ -8,9 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ark.Framework
+namespace Ark.Framework.Gui
 {
-    internal class InputHandler
+    internal class ControlInputHandler
     {
         #region [ Members ]
         private Control _control;
@@ -20,7 +20,7 @@ namespace Ark.Framework
 
 
         #region [ Constructor ]
-        public InputHandler(Control control)
+        public ControlInputHandler(Control control)
         {
             _control = control;
             mouse.MouseMoved += Hover;
