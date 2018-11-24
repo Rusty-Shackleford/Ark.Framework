@@ -26,6 +26,8 @@ namespace Ark.Framework.GUI.Controls
 
             LabelAlignment = style.LabelAlignment;
             LabelOffset = style.LabelOffset;
+
+            var name = GetType().BaseType.Name;
         }
 
 

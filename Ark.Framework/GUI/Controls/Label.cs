@@ -15,7 +15,6 @@ namespace Ark.Framework.GUI.Controls
         public new string Text
         {
             get { return _text; }
-            //TODO: Positioning with Anchor is off - need to check timing.
             set
             {
                 if (value != _text)

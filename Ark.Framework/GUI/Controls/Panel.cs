@@ -90,8 +90,8 @@ namespace Ark.Framework.GUI.Controls
         /// <param name="control"><see cref="Control"/> to add.</param>
         /// <param name="pref">Method used to anchor the control to this panel.</param>
         /// <param name="offset">Offset from this panel.</param>
-        public Control Add(Control control, AnchorPreference pref, 
-            PositionOffset offset, AnchorAlignment alignment = AnchorAlignment.Below_Center)
+        public Control Add(Control control, AnchorPreference pref,
+            AnchorAlignment alignment, PositionOffset offset)
         {
             switch (pref)
             {

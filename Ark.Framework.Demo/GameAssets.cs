@@ -81,12 +81,6 @@ namespace Ark.Framework.Demo
 
             #region [ Load Panel Styles ]
             var panelTexture = content.Load<Texture2D>(@"UI/Panel");
-            // still need to compare with the texture somehow... hmmm.
-            // We can't have Left = 4 here because we are already going to bind this based
-            // on the "Anchoring Offset", which is already moved in by 4.
-            // I think this needs to be updated to use Size... Its WAY too complicated to think
-            // through.. basically makes it unusable.  What we care about here is  SIZE of
-            // the Viewport, and it will be positioned based on the Anchorbounds already.
             PanelStyle = new PanelControlStyle(panelTexture, new Size(466,465))
             {
                 AnchoringOffset = new RectangleOffset(4, 23, 4, 8),
@@ -137,7 +131,6 @@ namespace Ark.Framework.Demo
                 FontColor = Color.White
             };
             #endregion
-
         }
         #endregion
 

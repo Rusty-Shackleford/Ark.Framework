@@ -1,12 +1,11 @@
-﻿using Ark.Framework.GUI;
+﻿using Ark.Framework.Graphics;
+using Ark.Framework.GUI.Anchoring;
 using Ark.Framework.GUI.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Ark.Framework.GUI.Anchoring;
 using System;
-using System.Diagnostics;
-using Ark.Framework.Graphics;
+
 
 namespace Ark.Framework.Demo
 {
@@ -97,30 +96,59 @@ namespace Ark.Framework.Demo
 
             // LABELS:
             LabelStatus = new Label(GameAssets.BtnStyle, "Status Message");            
-            TestPanel.Add(LabelStatus, AnchorPreference.Panel, new PositionOffset(-100, 35), AnchorAlignment.Inside_Top_Right);
+            TestPanel.Add(
+                LabelStatus, 
+                AnchorPreference.Panel, 
+                AnchorAlignment.Inside_Top_Right, 
+                new PositionOffset(-100, 35)
+                );
 
             LabelMoveStatus = new Label(GameAssets.BtnStyle, "---");
-            TestPanel.Add(LabelMoveStatus, AnchorPreference.Last, new PositionOffset(0, 10), AnchorAlignment.Below_Left);
+            TestPanel.Add(LabelMoveStatus, 
+                AnchorPreference.Last, 
+                AnchorAlignment.Below_Left, 
+                new PositionOffset(0, 10)
+                );
 
             LabelViewportBounds = new Label(GameAssets.BtnStyle, "");
-            TestPanel.Add(LabelViewportBounds, AnchorPreference.Last, new PositionOffset(0, 6), AnchorAlignment.Below_Left);
+            TestPanel.Add(
+                LabelViewportBounds, 
+                AnchorPreference.Last, 
+                AnchorAlignment.Below_Left, 
+                new PositionOffset(0, 6)
+                );
 
             LabelMousePosition = new Label(GameAssets.BtnStyle, "");
-            TestPanel.Add(LabelMousePosition, AnchorPreference.Last, new PositionOffset(0, 6), AnchorAlignment.Below_Left);
+            TestPanel.Add(
+                LabelMousePosition, 
+                AnchorPreference.Last, 
+                AnchorAlignment.Below_Left, 
+                new PositionOffset(0, 6)
+                );
             
             
-            // BUTTON
+            // BUTTON:
             Button btn = GameAssets.ConstructButton("Btn1", "Click Me");
 
             btn.Clicked += Btn1_Clicked;
-            TestPanel.Add(btn, AnchorPreference.Panel, new PositionOffset(20, 30), AnchorAlignment.Inside_Top_Left);
+            TestPanel.Add(
+                btn, 
+                AnchorPreference.Panel, 
+                AnchorAlignment.Inside_Top_Left, 
+                new PositionOffset(20, 30)
+                );
 
 
+            // CHECKBOX:
             Checkbox box = GameAssets.ConstructCheckbox("Ck1", "Not Checked");
             box.Checked += Ck1_Checked;
             box.Unchecked += Ck1_Unchecked;
-
-            TestPanel.Add(box, AnchorPreference.Last, new PositionOffset(0, 20), AnchorAlignment.Below_Left);
+            TestPanel.Add(
+                box, 
+                AnchorPreference.Last, 
+                AnchorAlignment.Below_Left,
+                new PositionOffset(0, 20)
+                );
         }
         #endregion
 

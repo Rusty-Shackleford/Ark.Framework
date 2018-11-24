@@ -80,6 +80,7 @@
     <Compile Include="Size.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="RectangleOffset.cs" />
+    <Compile Include="TextureRegion.cs" />
     <Compile Include="Viewport.cs" />
   </ItemGroup>
   <ItemGroup>
